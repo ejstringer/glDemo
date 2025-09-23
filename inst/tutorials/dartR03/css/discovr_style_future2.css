@@ -138,7 +138,7 @@ h4 {
 .panel, pre {
     color: #49345b;
     border-radius: 10;
-    background-color: #e8eae9;
+    background-color: #f8f8f8;
     border: 0;
     font-size: 16px;
 }
@@ -419,5 +419,11 @@ a:hover, a:focus {
 
 .caution {
   background-image: url("images/caution.png");
+}
+
+/* Just in case comment class is different */
+html body div.sourceCode pre code span.co {
+  color: #1a7f37 !important;
+  font-style: italic !important;
 }
 
