@@ -1,0 +1,78 @@
+---
+title: "A primer on R"
+author: "Arthur Georges and Emily Stringer"
+output:
+  learnr::tutorial:
+    progressive: false
+    theme: "united"
+    highlight: "tango"
+    css: ./css/dartR_style.css
+runtime: shiny_prerendered
+description: "The objective of this tutorial is to introduce you to R programming. The package dartR does not require an indepth knowledge of R programming, so those not wishing to dive deeper into the R programming aspects of SNP data analysis can skip this tutorial."
+---
+
+<html lang="en">
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+
+#necessary to render tutorial correctly
+library(learnr) 
+library(htmltools)
+
+# for tutorial data (this will be changed to dartR.data)
+library(glDemo) 
+
+## Add any additional packages
+
+
+```
+
+
+
+```{r klippy, echo=FALSE, include=TRUE}
+# allows people to easily copy code snippets
+klippy::klippy()
+```
+
+## Welcome
+
+The objective of this tutorial is to introduce you to R programming. The package dartR does not require an indepth knowledge of R programming, so those not wishing to dive deeper into the R programming aspects of SNP data analysis can skip this tutorial.
+
+After completing this tutorial you should have a basic understanding of the fundamentals of the R language and programming in R. This includes the means by which to import data into R workflow, understanding of the data structures R uses to hold data, and how to manipulate those data with assignment statements, conditional statements and repetition statements. 
+
+Most importantly, you should be empowered to expand your knowledge beyond the basics presented here by knowing where information on R operations and capabilities are located and how it can be accessed.
+
+
+Throughout this tutorial there will be interactive R scripts/consoles (like the one below). This is like a mini version of R running within this tutorial. But since we are already in R, why not follow along in your own console and start writing your own code in the source panel. You could follow the tutorial exactly or you could follow along using your own data. 
+
+```{r ex, exercise=TRUE}
+# Press the Run Code button to run this code
+1+1
+```
+
+```{r ex-solution}
+# This is an example of the interactive component 
+#of this tutorial. 
+
+# Try running some code and testing out the three buttons:
+#  - Run Code, 
+#  - Start Over, 
+#  - and Solution
+
+```
+
+Any troubles or tribulations, we have a great community that can be found on the [dartR google group](https://groups.google.com/g/dartr). 
+
+
+One final note, while going through the tutorial your progress will be saved, if at any point you would like to refresh the tutorial and start over, the <small>[Start Over]{style="color:#a3a3a3; font-family:'Ubuntu';"}</small> button is located at the bottom of the left sidebar, below the tutorial content.
+
+## ... other sidebar headers
+
+## Review
+
+## Exercises
