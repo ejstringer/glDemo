@@ -62,11 +62,11 @@ em {
 /*--------- Headers ---------*/
 
 p {
-  font-size: 18px;
+  font-size: 15px;
 }
 
 ul {
-  font-size: 18px;
+  font-size: 15px;
 }
 
 h1 {
@@ -79,6 +79,7 @@ h2 {
 
 h3 {
   color: #cc9900;
+  font-size: 20px;
 }
 
 h4 {
@@ -252,6 +253,7 @@ a:hover, a:focus {
     color: #3F3F3F;
     text-shadow: none;
     font-family: 'Jaldi', sans-serif;
+    max-height: 50px; /* Adjust this value as needed */
 }
 
 /*------- Buttons -------*/
@@ -390,6 +392,8 @@ a:hover, a:focus {
   width: 25%;
 }
 
+
+
 .right_txt {
   width: 75%;
 }
@@ -424,13 +428,14 @@ a:hover, a:focus {
 
 .my-solution {
   margin: 1em 0;
+  padding-left: 5px;
   border: 2px solid darkseagreen;
   border-left: 10px solid #698B69;
   border-radius: 10px;
 }
 
 .my-solution-header {
-  margin-left: 0;
+  margin-left: 15;
   padding-left:  60px;
   padding-top:  15px;
   padding-bottom: 0.1em;

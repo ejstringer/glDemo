@@ -3,7 +3,8 @@ title: "dartR data structure and data input"
 author: "Arthur Georges and Emily Stringer"
 output:
   learnr::tutorial:
-    progressive: false
+    progressive: true
+    allow_skip: true
     theme: "united"
     highlight: "tango"
     css: ./css/dartR_style.css
@@ -23,9 +24,10 @@ knitr::opts_chunk$set(
 #necessary to render tutorial correctly
 library(learnr) 
 library(htmltools)
-
+#options(repos = BiocManager::repositories())
 library(dartR.data)
 library(dartR.base)
+gl.set.verbosity(3)
 
 library(glDemo) # for tutorial data
 
@@ -36,11 +38,17 @@ library(glDemo) # for tutorial data
 klippy::klippy()
 ```
 
-## Welcome
+## Introduction
+###
 
-In this tutorial, you will learn how to work with dartR objects. If you haven't already check out the Introduction dartR ebook chapter [[How dartR stores your data and data input](http://dartr.biomatix.org/dartR)]{style="color:#ff0000;"}. There is also an accompanying [AI podcast summary](https://public.3.basecamp.com/p/Dp1F2egZGXY5siDf1MPFqyyg), which you should definitely check out if you are more of an auditory learner.
+In this tutorial, you will learn how to work with dartR objects. If you haven't already, check out the Introduction dartR ebook chapter [[How dartR stores your data and data input](http://dartr.biomatix.org/dartR)]{style="color:#ff0000;"}. There is also an accompanying [AI podcast summary](https://public.3.basecamp.com/p/Dp1F2egZGXY5siDf1MPFqyyg), which you should definitely check out if you are more of an auditory learner.
 
-Throughout this tutorial there will be interactive R scripts/consoles (like the one below). This is like a mini version of R running within this tutorial. But since we are already in R, why not follow along in your own console and start writing your own code in the source panel. You could follow the tutorial exactly or you could follow along using your own data.
+If you can't see the left sidebar you just need to make the tutorial panel wider.
+
+###
+Throughout this tutorial there will be interactive R scripts/consoles (like the one below). This is like a mini version of R running within this tutorial. But since we are already in R, you can also follow along in your own console and start writing your own code in the source panel. You could even try testing some of what you learn on your own data. 
+
+But first, try running the code below (press the button that says *run code*)
 
 ```{r ex, exercise=TRUE}
 # Press the Run Code button to run this code
@@ -58,49 +66,90 @@ Throughout this tutorial there will be interactive R scripts/consoles (like the 
 
 ```
 
+###
 Any troubles or tribulations, we have a great community that can be found on the [dartR google group](https://groups.google.com/g/dartr).
+
+###
+Some of the exercises within this tutorial are specific to your working environment or Rstudio, these types of exercises will be surrounded by a green box, like the one below.
+
+::: {.my-solution icon="false"}
+
+It might be loading in data, or setting the working environment, or creating an R project. 
+
+:::
+
+They need to be run in your console. These are optional at the time, if you want you can continue with the worked example and come back to these when you want to start working in your own RStudio. 
+
+###
 
 One final note, while going through the tutorial your progress will be saved, if at any point you would like to refresh the tutorial and start over, the <small>[Start Over]{style="color:#a3a3a3; font-family:'Ubuntu';"}</small> button is located at the bottom of the left sidebar, below the tutorial content.
 
-## The data
+###
 
-In this worked example, we will access the sample data files provided on the [**dartR web page**](http://dartr.biomatix.org/dartR).
+Alright! Let's get started, click the button below to continue to the next section
+
+## The data
+###
+
+In this worked example, we will access the sample data files provided on the [**dartR web page**](http://dartr.biomatix.org/dartR). You will be directed to download them later on in this tutorial.
 
 -   **`r xfun::embed_file("./www/sample_data_2row.csv", text = "sample_data_2row.csv (click to download)")`**
-
+ 
 -   **`r xfun::embed_file("./www/samplemetadata1.csv",name = "sample_metadata.csv", text = "sample_metadata.csv (click to download)")`**
+
 
 ### Assign a working directory, download raw data
 
 A first step is to assign a working directory
 
+###
+
 ::: {.my-solution icon="false"}
-::: {style="display: flex;"}
-::: {.column width="20%"}
-<br> ![](./images/task.png){#id .class width="100" height="100"}
+
+Create a project using the RStudio menu (File - New Project). Your project will become the default directory for files but you can change the the directory by using The RStudio menu (Session - Set Working Directory). Alternatively use `setwd()`
+
 :::
 
-::: {.column width="80%"}
-Create a project using the RStudio menu (File - New Project) and set the default directory for files using The RStudio menu (Session - Set Working Directory). Alternatively use `set.wd()`.
+###
 
-Also set the global verbosity level to 3 to provided detailed diagnostics, `gl.set.verbosity(3)`
+Once you have set your working directory it is a good idea to open an R script file (File - New File - R Script or use shortcut keys ctrl/cmd + shift + N) to write your code, instead of straight to the console.
+
+::: {.my-solution icon="false"}
+Then you need to load in **dartRverse** using the `library()` function
+
 :::
-:::
+
+<small>Below is example code, in the upper left hand corner of the code there is an icon to copy the code chunk (this applies for all code chunks in this tutorial).</small>
+
+```{r eval = FALSE}
+library(dartRverse)
+```
+
+### 
+
+By loading in the **dartRverse** package it should automatically load in **dartR.base** and **dartR.data**. These are packages we need for this tutorial. 
+
+
+### 
+
+::: {.my-solution icon="false"}
+Set the global verbosity level to 3 to provided detailed diagnostics, `gl.set.verbosity(3)`
+
 :::
 
 ### Download raw data
 
 ::: {.my-solution icon="false"}
-::: {style="display: flex;"}
-::: {.column width="20%"}
-<br> ![](./images/task.png){.class width="100" height="100"}
+
+Download the file [sample_data_2Row.csv]{style="color:blue; font-family: 'Courier New';"} [`r xfun::embed_file("./www/sample_data_2row.csv", text = "(click to download)")`]{style="font-family: 'Courier New';"} and place it in the working directory. If you like you can open the file in Excel 
+
 :::
 
-::: {.column width="80%"}
-Download the two datafiles using the links provided above and place them in the working directory. Open the file [sample_data_2Row.csv]{style="color:blue; font-family: 'Courier New';"} in Excel. This is a set of SNP data for *Emydura*, a freshwater turtle, in 2-row format as would be supplied by Diversity Arrays Technology Pty Ltd.
-:::
-:::
-:::
+###
+
+This is a set of SNP data for *Emydura*, a freshwater turtle, in 2-row format as would be supplied by Diversity Arrays Technology Pty Ltd.
+
+### 
 
 The contents and format of the csv file do not need to concern you. dartR handles all the complexities. If you do want to learn more, refer to the MetaDataDefinition file provided by Diversity Arrays Technology as part of their report. In this case, a definition file is provided as [sample_metadata.xlsx]{style="color:green; font-family: 'Courier New';"}. You can also go to the [Diversity Arrays Technology ([**DArT**]{style="color:#cc9900;"})](https://www.diversityarrays.com/) website.
 
@@ -109,26 +158,26 @@ The contents and format of the csv file do not need to concern you. dartR handle
 Recall that the individual metadata comprise attributes assigned to each individual.
 
 ::: {.my-solution icon="false"}
-::: {style="display: flex;"}
-::: {.column width="20%"}
-<br> ![](./images/task.png){.class width="100" height="100"}
+
+Download the individual metadata file [sample_metadata.csv]{style="color:blue; font-family: 'Courier New';"} [`r xfun::embed_file("./www/samplemetadata1.csv",name = "sample_metadata.csv", text = "(click to download)")`]{style="font-family: 'Courier New';"} and place it in the working directory.
+
+Open the file in Excel and examine its contents
 :::
 
-::: {.column width="80%"}
-<br> Download the individual metadata file datafile [sample_metadata.csv]{style="color:blue; font-family: 'Courier New';"} using the link provided above and place it in the working directory.
+###
 
-Open the file in Excel and examine its contents.
-:::
-:::
-:::
-
-The individual metadata file [sample_metadata.csv]{style="color:blue; font-family: 'Courier New';"} has two compulsory fields **id** and **pop**, and some optional fields **lat**, **long**, **sex** and **maturity** associated with each individual. You can add whatever attributes you like to this metadata file.
+The individual metadata file [sample_metadata.csv]{style="color:blue; font-family: 'Courier New';"} has two compulsory fields: **id** and **pop**. Optional fields include **lat**, **long**, **sex** and **maturity** associated with each individual. You can add whatever attributes you like to this metadata file.
 
 ### Read the data into dartR
 
-Read the data from [sample_data_2Row.csv]{style="color:blue; font-family: 'Courier New';"} into a dartR object and assign the individual metrics:
+::: {.my-solution icon="false"}
+Read the data from [sample_data_2Row.csv]{style="color:blue; font-family: 'Courier New';"} into a dartR object and assign the individual metrics using `gl.read.dart()` 
 
-<small>Below are two tabs, the first is the code and the second is the output generated when running the code - loading in a dartR object. In the upper left hand corner of the code tab there is an icon to copy the code chunk (this applies for all code chunks in this tutorial).</small>
+Name your dartR object `gl`
+
+:::
+
+<small>Below are two tabs, the first is the code and the second is the output generated when running the code - loading in a dartR object.</small>
 
 ####  {.tabset}
 
@@ -146,83 +195,101 @@ gl <- gl.read.dart(filename="./www/sample_data_2Row.csv",
                    ind.metafile="./www/samplemetadata1.csv")
 ```
 
+```{r datax}
+gl <- gl_sample 
+
+```
+
+###
+
+Great! Now we have our data, lets start interrogating it.
+
 ## Interrogate
 
 ### Interrogate the dartR genlight object
 
 Let's examine the contents of the dartR object.
 
+###
+
 Just before we do, lets do a quick refresher of what a dartR object actually is, of course if you want more background check out the [ebook chapter](http://dartr.biomatix.org/dartR) associated with this tutorial.
 
-If you are familiar with genlight objects, a dartR object is effectively a version of a genlight object that is specific to the dartR package suite. A genlight object is a data structure used to efficiently store and analyse large genetic marker data. It includes the allelic state for each SNP called and for every individual genotyped. Additionally it also includes the metadata associated with the individuals genotyped and the SNP loci called. That's a lot of information! So lets learn how to interrogate our dartR object.
+###
 
-::: {.my-solution icon="false"}
-::: {style="display: flex;"}
-::: {.column width="20%"}
-<br> ![](./images/task.png){.class width="100" height="100"}
-:::
+If you are familiar with genlight objects, a dartR object is effectively a version of a genlight object that is specific to the dartR package suite. A genlight object is a data structure used to efficiently store and analyse large genetic marker data. It includes the allelic state for each SNP called and for every individual genotyped. 
 
-::: {.column width="80%"}
-Undertake some basic diagnostics using:
+###
 
-```{r eval = FALSE}
+Additionally it also includes the metadata associated with the individuals genotyped and the SNP loci called. That's a lot of information! So lets learn how to interrogate our dartR object.
 
-nInd(gl)
-nLoc(gl)
-nPop(gl) 
-
-```
-
-Maybe check the population and individual names:
-
-```{r eval = FALSE}
-popNames(gl)
-indNames(gl)
-
-```
-
-<small>Try copying some of the code into the `R Code` box below, then press the *Run Code* button. To run new code simply press the *Start Over* to clear the console and output.</small>
-:::
-:::
-:::
-
-```{r datax}
-gl <- gl_sample 
-
-```
+### Exercise 1 
+Let's start by undertaking some basic diagnostics. Remember we named the data `gl`, so first let's find out how many loci are in our dataset, using `nLoc()`.
 
 ```{r diag, exercise=TRUE, exercise.setup = "datax"}
 
 ```
 
 ```{r diag-solution}
-# try some of the functions listed above on the dartR object gl
-
-# e.g.
-nInd(gl)
+nLoc(gl)
 ```
 
-## Individual metrics
+<small> If you are struggling with the code try pressing the *Solution* button to see the solution.</small>
 
-Individual metadata are user-provided and not generated by DArT, and they are stored in a separate dataframe within the dartR object, known as `ind.metrics`. This metadata is input via a [csv]{style="color:blue; font-family: 'Courier New';"} file, and are loaded into the genlight [Read the data into dartR] using [`gl.read.dart()`](#readin). The file must include at least two required columns: **id**, which uniquely identifies each individual or specimen, **pop**, which designates the biological population each individual belongs to. Additional user-defined metadata (e.g., sex, maturity, latitude, and longitude) can also be included in the same file.
+### Exercise 2
+
+Next we can use the functions `nInd()` and `nPop()` to find out how many individuals and populations are in `gl`
+
+```{r diag2, exercise=TRUE, exercise.setup = "datax"}
+
+```
+
+```{r diag2-solution}
+nInd(gl)
+nPop(gl)
+```
+
+<small> To run new code simply press the *Start Over* to clear the console and output.</small>
+
+### Exercise 3
+That's great to find out how many individuals and populations we have but what about which populations we have. We can check this using the `popNames()`
+
+```{r diag3, exercise=TRUE, exercise.setup = "datax"}
+
+```
+
+```{r diag3-solution}
+popNames(gl)
+```
+
+### Exercise 4
+We can check the individual names in a similar way, using `indNames()`
+
+```{r diag4, exercise=TRUE, exercise.setup = "datax"}
+
+```
+
+```{r diag4-solution}
+indNames(gl)
+```
+
+###
+
+Nice! Now lets move on to the metadata
+
+## Metadata
+###
+
+There are two types of metadata, one associated with the loci and the other associated with individuals. Let's start with individual metadata.
+
+### Individual metrics
+
+Individual metadata are user-provided and not generated by DArT, and they are stored in a separate dataframe within the dartR object, known as `ind.metrics`. This metadata is input via a [csv]{style="color:blue; font-family: 'Courier New';"} file, and are loaded into the genlight Read the data into dartR using `gl.read.dart()`. The file must include at least two required columns: **id**, which uniquely identifies each individual or specimen, **pop**, which designates the biological population each individual belongs to. Additional user-defined metadata (e.g., sex, maturity, latitude, and longitude) can also be included in the same file.
 
 ### What do we have in the way of individual metrics?
 
-::: {.my-solution icon="false"}
-::: {style="display: flex;"}
-::: {.column width="20%"}
-<br> ![](./images/task.png){.class width="100" height="100"}
-:::
+dartR objects store individual metadata that can seem a little hard to access. But don't worry it's easier than it looks, all you need to know is the metadata's *address*. The individual metadata lives at `gl@other$ind.metrics`. 
 
-::: {.column width="80%"}
-dartR objects store individual metadat. Let's see what metadata is stored in our turtle data:
-
-```{r eval = FALSE}
-names(gl@other$ind.metrics)
-```
-:::
-:::
-:::
+Now let’s see what metadata is stored in our turtle data using `names()`:
 
 ```{r met_datan, exercise=TRUE, exercise.setup = "datax"}
 
@@ -234,81 +301,64 @@ names(gl@other$ind.metrics)
 
 ### Next, undertake some basic diagnostics:
 
-::: {.my-solution icon="false"}
-::: {style="display: flex;"}
-::: {.column width="20%"}
-<br> ![](./images/task.png){.class width="100" height="100"}
-:::
+Examine the contents of the individual metrics, in this case the first 10 values of the attribute `sex`:
 
-::: {.column width="80%"}
-Examine the contents of the individual metrics, in this case the first 10 values of the attribute "sex":
 
-```{r eval = FALSE}
+```{r met_data, exercise=TRUE, exercise.setup = "datax"}
 ## Only first 10 entries shown
 gl@other$ind.metrics$sex[1:10]
 
 ```
 
-<small>Try it also with some other metrics.</small>
-:::
-:::
-:::
-
-```{r met_data, exercise=TRUE, exercise.setup = "datax"}
-
-```
 
 ```{r met_data-solution}
 # example
 gl@other$ind.metrics$pop[1:10]
 ```
 
-## Locus metrics
+<small>Try it also with some other metrics.</small>
+
+### 
+
+Great! If you are finished examining the individual metadata let's move on to the locus metadata.
+
+### Locus metrics
 
 The locus metadata included in the dartR object are those provided as part of your Diversity Arrays Technology report. These metadata are obtained from the Diversity Arrays Technology [csv]{style="color:blue; font-family: 'Courier New';"} file when it is read in to the genlight object using `gl.read.dart()`. The locus metadata are held in an R data.frame that is associated with the SNP data as part of the dartR object.
 
 ### What do we have in the way of locus metrics?
 
-::: {.my-solution icon="false"}
-::: {style="display: flex;"}
-::: {.column width="20%"}
-<br> ![](./images/task.png){.class width="100" height="100"}
-:::
+Locus metadata lives at `gl@other$loc.metrics`. Let's see what metadata is stored in our turtle data (just like we did with our individual metadata).
 
-::: {.column width="80%"}
-dartR objects store locus metadata. Let's see what metadata is stored in our turtle data:
-
-```{r eval = FALSE}
-## List the names of metrics
-names(gl@other$loc.metrics)
-
-```
-
-<small>Run the code in the `R code` box below </small>
-
-Next, examine the contents of the locus metrics, in this case the first 10 values of the attribute "RepAvg"
-
-```{r eval = FALSE}
-
-## first 10 entries
-gl@other$loc.metrics$RepAvg[1:10]
-
-```
-
-<small>Try it also with some other metrics.</small>
-:::
-:::
-:::
 
 ```{r met_datal, exercise=TRUE, exercise.setup = "datax"}
+## list the names() of loc.metrics
 
 ```
 
 ```{r met_datal-solution}
 names(gl@other$loc.metrics)
 
-# also examine the contents 
 ```
+
+### Next, undertake some basic diagnostics:
+
+Examine the contents of the locus metrics, in this case the first 10 values (`[1:10]`) of the attribute "RepAvg".
+
+```{r met_datal2, exercise=TRUE, exercise.setup = "datax"}
+
+```
+
+```{r met_datal2-solution}
+## first 10 entries
+gl@other$loc.metrics$RepAvg[1:10]
+```
+
+<small>Try it also with some other metrics.</small>
+
+###
+
+Great work! You really must be getting to know the data by now. Let's move on to saving our work.
 
 ## Save and tidy
 
@@ -317,41 +367,36 @@ names(gl@other$loc.metrics)
 Raw data files can be very large and take time to read into dartR. It is something you only want to do once. You can save your dartR genlight object in compact binary form. This will take only seconds to load into RStudio, not minutes.
 
 ::: {.my-solution icon="false"}
-::: {style="display: flex;"}
-::: {.column width="20%"}
-<br> ![](./images/task.png){.class width="100" height="100"}
+
+Try saving `gl` or your own genlight object to your workspace using `gl.save`, and verify that it has been saved to the appropriate directory. 
+
+Then restore it to a new dartR object using `gl.load.
+
 :::
 
-::: {.column width="80%"}
-Try saving `gl` or your own genlight object to your workspace, and verify that it has been saved to the appropriate directory. Then restore it to a new dartR object.
+<small>Below is the code to save `gl` as an R file and reload it. Within the `" "` you put the name you want to call your file followed by *.Rdata* </small>
 
 ```{r eval = FALSE}
 gl.save(gl,"turtle.Rdata")
 gl.new <- gl.load("turtle.Rdata")
 ```
-:::
-:::
-:::
 
 ### Tidy up the Workspace
 
 We have created files that we will not use again, so they should be removed from the workspace.
 
 ::: {.my-solution icon="false"}
-::: {style="display: flex;"}
-::: {.column width="20%"}
-<br> ![](./images/task.png){.class width="100" height="100"}
+
+Tidy up your workspace by removing the genlight objects `gl` and `gl.new` using `rm`, assuming you do not want to access them again in raw form (you can always load it back in later).
+
 :::
 
-::: {.column width="80%"}
-Tidy up your workspace by removing the genlight objects gl and gl.new, assuming you do not want to access them again in raw form.
+<small>Below is the code to remove objects from your environment</small> 
 
 ```{r eval = FALSE}
 rm(gl, gl.new)
 ```
-:::
-:::
-:::
+
 
 ### You are now a pro!
 

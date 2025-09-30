@@ -13,7 +13,7 @@ description: "The objective of this tutorial is to introduce you to R programmin
 
 <html lang="en">
 
-```{r setup, include=FALSE}
+```{r setupx, include=FALSE}
 knitr::opts_chunk$set(
 	echo = TRUE,
 	message = FALSE,
@@ -28,13 +28,14 @@ library(htmltools)
 library(glDemo) 
 
 ## Add any additional packages
-
+library("knitr")
+opts_knit$set(root.d = rprojroot::find_rstudio_root_file())
 
 ```
 
 
 
-```{r klippy, echo=FALSE, include=TRUE}
+```{r klippyy, echo=FALSE, include=TRUE}
 # allows people to easily copy code snippets
 klippy::klippy()
 ```
@@ -50,12 +51,12 @@ Most importantly, you should be empowered to expand your knowledge beyond the ba
 
 Throughout this tutorial there will be interactive R scripts/consoles (like the one below). This is like a mini version of R running within this tutorial. But since we are already in R, why not follow along in your own console and start writing your own code in the source panel. You could follow the tutorial exactly or you could follow along using your own data. 
 
-```{r ex, exercise=TRUE}
+```{r exx, exercise=TRUE}
 # Press the Run Code button to run this code
 1+1
 ```
 
-```{r ex-solution}
+```{r exx-solution}
 # This is an example of the interactive component 
 #of this tutorial. 
 
@@ -70,6 +71,9 @@ Any troubles or tribulations, we have a great community that can be found on the
 
 
 One final note, while going through the tutorial your progress will be saved, if at any point you would like to refresh the tutorial and start over, the <small>[Start Over]{style="color:#a3a3a3; font-family:'Ubuntu';"}</small> button is located at the bottom of the left sidebar, below the tutorial content.
+
+![](inst/tutorials/dartR02/images/task.png)
+
 
 ## ... other sidebar headers
 
