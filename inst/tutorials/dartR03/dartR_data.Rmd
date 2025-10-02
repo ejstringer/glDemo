@@ -5,7 +5,7 @@ output:
   learnr::tutorial:
     progressive: true
     allow_skip: true
-    theme: "united"
+    theme: "cerulean"
     highlight: "tango"
     css: ./css/dartR_style.css
 runtime: shiny_prerendered
@@ -93,16 +93,10 @@ Alright! Let's get started, click the button below to continue to the next secti
 
 In this worked example, we will access the sample data files provided on the [**dartR web page**](http://dartr.biomatix.org/dartR). You will be directed to download them later on in this tutorial.
 
--   **`r xfun::embed_file("./www/sample_data_2row.csv", text = "sample_data_2row.csv (click to download)")`**
- 
--   **`r xfun::embed_file("./www/samplemetadata1.csv",name = "sample_metadata.csv", text = "sample_metadata.csv (click to download)")`**
-
 
 ### Assign a working directory, download raw data
 
 A first step is to assign a working directory
-
-###
 
 ::: {.my-solution icon="false"}
 
@@ -129,9 +123,6 @@ library(dartRverse)
 
 By loading in the **dartRverse** package it should automatically load in **dartR.base** and **dartR.data**. These are packages we need for this tutorial. 
 
-
-### 
-
 ::: {.my-solution icon="false"}
 Set the global verbosity level to 3 to provided detailed diagnostics, `gl.set.verbosity(3)`
 
@@ -141,11 +132,10 @@ Set the global verbosity level to 3 to provided detailed diagnostics, `gl.set.ve
 
 ::: {.my-solution icon="false"}
 
-Download the file [sample_data_2Row.csv]{style="color:blue; font-family: 'Courier New';"} [`r xfun::embed_file("./www/sample_data_2row.csv", text = "(click to download)")`]{style="font-family: 'Courier New';"} and place it in the working directory. If you like you can open the file in Excel 
+Download the file [sample_data_2Row.csv]{style="color:blue; font-family: 'Courier New';"} [`r xfun::embed_file("./www/sampledata2row.csv", name = "sample_data_2row.csv", text = "(click to download)")`]{style="font-family: 'Courier New';"} and place it in the working directory. If you like you can open the file in Excel 
 
 :::
 
-###
 
 This is a set of SNP data for *Emydura*, a freshwater turtle, in 2-row format as would be supplied by Diversity Arrays Technology Pty Ltd.
 
@@ -185,13 +175,13 @@ Name your dartR object `gl`
 
 ```{r, eval = FALSE}
 gl <- gl.read.dart(filename="./sample_data_2Row.csv",
-                   ind.metafile="./samplemetadata1.csv")
+                   ind.metafile="./sample_metadata.csv")
 ```
 
 ##### output
 
 ```{r, echo = FALSE}
-gl <- gl.read.dart(filename="./www/sample_data_2Row.csv",
+gl <- gl.read.dart(filename="./www/sampledata2Row.csv",
                    ind.metafile="./www/samplemetadata1.csv")
 ```
 
@@ -222,7 +212,7 @@ If you are familiar with genlight objects, a dartR object is effectively a versi
 
 Additionally it also includes the metadata associated with the individuals genotyped and the SNP loci called. That's a lot of information! So lets learn how to interrogate our dartR object.
 
-### Exercise 1 
+### Basic diagnostics 
 Let's start by undertaking some basic diagnostics. Remember we named the data `gl`, so first let's find out how many loci are in our dataset, using `nLoc()`.
 
 ```{r diag, exercise=TRUE, exercise.setup = "datax"}
@@ -235,7 +225,7 @@ nLoc(gl)
 
 <small> If you are struggling with the code try pressing the *Solution* button to see the solution.</small>
 
-### Exercise 2
+### More diagnostics
 
 Next we can use the functions `nInd()` and `nPop()` to find out how many individuals and populations are in `gl`
 
@@ -250,7 +240,7 @@ nPop(gl)
 
 <small> To run new code simply press the *Start Over* to clear the console and output.</small>
 
-### Exercise 3
+### Population names
 That's great to find out how many individuals and populations we have but what about which populations we have. We can check this using the `popNames()`
 
 ```{r diag3, exercise=TRUE, exercise.setup = "datax"}
@@ -261,7 +251,7 @@ That's great to find out how many individuals and populations we have but what a
 popNames(gl)
 ```
 
-### Exercise 4
+### Individual names
 We can check the individual names in a similar way, using `indNames()`
 
 ```{r diag4, exercise=TRUE, exercise.setup = "datax"}
@@ -271,6 +261,21 @@ We can check the individual names in a similar way, using `indNames()`
 ```{r diag4-solution}
 indNames(gl)
 ```
+
+### Genotypes
+
+Sometimes we are actually interested in the SNP calls and we can access this formation within our dartR object using `as.matrix()`. Let's display the genotypes for the first 3 individuals and the first 6 loci. After running the below code, try showing the first 5 individuals and first 10 loci.
+
+```{r diag5, exercise=TRUE, exercise.setup = "datax"}
+# Run Code
+as.matrix(gl)[1:3,1:6]
+```
+
+```{r diag5-solution}
+#first 5 individuals and first 10 loci
+as.matrix(gl)[1:5,1:10]
+```
+
 
 ###
 
@@ -306,7 +311,7 @@ Examine the contents of the individual metrics, in this case the first 10 values
 
 ```{r met_data, exercise=TRUE, exercise.setup = "datax"}
 ## Only first 10 entries shown
-gl@other$ind.metrics$sex[1:10]
+gl@other$ind.metrics$sex[1:10]   
 
 ```
 
@@ -316,7 +321,7 @@ gl@other$ind.metrics$sex[1:10]
 gl@other$ind.metrics$pop[1:10]
 ```
 
-<small>Try it also with some other metrics.</small>
+<small>In the same R code box, try it also with some other metrics.</small>
 
 ### 
 
@@ -343,7 +348,7 @@ names(gl@other$loc.metrics)
 
 ### Next, undertake some basic diagnostics:
 
-Examine the contents of the locus metrics, in this case the first 10 values (`[1:10]`) of the attribute "RepAvg".
+Examine the contents of the locus metrics, in this case the first 10 values `[1:10]` of the attribute "RepAvg".
 
 ```{r met_datal2, exercise=TRUE, exercise.setup = "datax"}
 
@@ -354,23 +359,26 @@ Examine the contents of the locus metrics, in this case the first 10 values (`[1
 gl@other$loc.metrics$RepAvg[1:10]
 ```
 
-<small>Try it also with some other metrics.</small>
+<small>In the same R code box, try it also with some other metrics.</small>
 
 ###
 
 Great work! You really must be getting to know the data by now. Let's move on to saving our work.
 
 ## Save and tidy
+### 
+
+Raw data files can be very large and take time to read into dartR. It is something you only want to do once. You can save your dartR genlight object in compact binary form. This will take only seconds to load into RStudio, not minutes.
+
 
 ### Save the dartR genlight object in compact form
 
-Raw data files can be very large and take time to read into dartR. It is something you only want to do once. You can save your dartR genlight object in compact binary form. This will take only seconds to load into RStudio, not minutes.
 
 ::: {.my-solution icon="false"}
 
 Try saving `gl` or your own genlight object to your workspace using `gl.save`, and verify that it has been saved to the appropriate directory. 
 
-Then restore it to a new dartR object using `gl.load.
+Then restore it to a new dartR object using `gl.load`.
 
 :::
 
@@ -387,7 +395,7 @@ We have created files that we will not use again, so they should be removed from
 
 ::: {.my-solution icon="false"}
 
-Tidy up your workspace by removing the genlight objects `gl` and `gl.new` using `rm`, assuming you do not want to access them again in raw form (you can always load it back in later).
+Tidy up your workspace by removing the genlight objects `gl` and `gl.new` using `rm()`, assuming you do not want to access them again in raw form (you can always load it back in later).
 
 :::
 
@@ -445,26 +453,24 @@ question("Of the names listed below, which are found in the locus metrics?",
 
 Below are two exercises for you to try on your own with everything you've learnt. We do provide hints for you to review your work but refrain from viewing them until you have completed the exercise to the best of your ability.
 
-### Exercise 1: 1-Row Format
+#### **Exercise 1: 1-Row Format**
 
-####  {.tabset}
+#####  {.tabset}
 
-##### Exercise
+###### Exercise
 
--   Open the file [sample_data_1Row.csv]{style="color:blue; font-family: 'Courier New';"} in Excel. This is a set of SNP data for Emydura, a freshwater turtle, in 1-row format as would be supplied by Diversity Arrays Technology Pty Ltd.
+-   Open the file [sample_data_1Row.csv]{style="color:blue; font-family: 'Courier New';"} [`r xfun::embed_file("./www/sampledata1row.csv", name = "sample_data_1row.csv", text = "(click to download)")`]{style="font-family: 'Courier New';"} in Excel. This is a set of SNP data for *Emydura*, a freshwater turtle, in 1-row format as would be supplied by [Diversity Arrays Technology Pty Ltd](https://www.diversityarrays.com).
 
--   Refer to the documentation on the Diversity Arrays Technology web page to understand the scoring of SNPs in the 1-row format.
+-   Refer to the MetaDataDefinition file provided by Diversity Arrays Technology as part of their report. In this case, a definition file is provided as [MetaDataDefinition.xlsx]{style="color:green; font-family: 'Courier New';"} [`r xfun::embed_file("./www/samplemetadata1.xlsx", name = "MetaDataDefinition.xlsx", text = "(click to download)")`]{style="font-family: 'Courier New';"}.
 
--   Also refer to the MetaDataDefinition file provided by Diversity Arrays Technology as part of their report. In this case, a definition file is provided as [sample_metadata.xlsx]{style="color:green; font-family: 'Courier New';"}.
-
--   Now examine the individual metadata in the file [sample_data_1Row.csv]{style="color:blue; font-family: 'Courier New';"}. Note the two mandatory columns id and pop.
+-   During the worked example you should have already downloaded the individual metadata, if you have not already do so now [sample_metadata.csv]{style="color:blue; font-family: 'Courier New';"} [`r xfun::embed_file("./www/samplemetadata1.csv",name = "sample_metadata.csv", text = "(click to download)")`]{style="font-family: 'Courier New';"}. Examine the individual metadata in the file and note the two mandatory columns id and pop.
 
 -   Create a new script in the RStudio Editor Window and add the lines
 
 ```{r}
 # EXERCISE 1: 1-Row Format
 # Input data from sample_data_1Row.csv, 
-#   associate with sample_data_1Row.csv
+#   associate with sample_metadata.csv
 
 ```
 
@@ -474,38 +480,68 @@ Below are two exercises for you to try on your own with everything you've learnt
 
 -   Use the `as.matrix()` function to display the genotypes for the first 5 individuals and the first 10 loci.
 
-##### Hints
+###### Hints
 
-Yet to come...
+*To load in DArT data you need to use the function `gl.read.dart()`. Don't forget to use the assign function `<-` to name your data.*
 
-### Exercise 2: SilicoDArT
+*There are many useful functions to summarise your data, like `nLoc`, `popNames()`, etc..., but you can also just type the name of your dartR object to be shown useful summary information.*
 
-####  {.tabset}
+*To subset data you use the square brackets `[ ]`. A matrix is two dimensional so you can subset by rows and columns, separated by a comma like so: `[rows, columns]`. Individuals are associated with rows and loci are associated with columns*
 
-##### Exercise
+
+
+###### Solution
+
+```{r eval=FALSE}
+# EXERCISE 1: 1-Row Format
+# Input data from sample_data_1Row.csv, 
+#   associate with sample_metadata.csv
+
+# laod
+gl.1row <- gl.read.dart(filename="./sample_data_2Row.csv",
+                   ind.metafile="./sample_metadata.csv")
+
+# Summary
+gl.1row
+nLoc(gl.1row)
+nInd(gl.1row)
+nPop(gl.1row)
+
+# genotypes
+
+as.matrix(gl.1row)[1:5,1:10]
+
+```
+
+#### **Exercise 2: SilicoDArT** {data-progressive=FALSE}
+
+
+#####  {.tabset}
+
+###### Exercise
 
 -   Open the file [sample_data_silicodart.csv]{style="color:blue; font-family: 'Courier New';"} in Excel. This is a set of marker presence/absence data for Cherax destructor provided in SilicoDArT format by Diversity Arrays Technology Pty Ltd.
 
--   Refer to the documentation on the Diversity Arrays Technology web page to understand the scoring of the data in the SilicoDArT format.
+-   Refer to the documentation on the Diversity Arrays Technology [web page](https://www.diversityarrays.com/services/dartseq/dartseq-data-types/) to understand the scoring of the data in the SilicoDArT format.
 
--   Also refer to the MetaDataDefinition file provided by Diversity Arrays Technology as part of their report. In this case, a definition file is provided as [sample_metadata.xlsx]{style="color:green; font-family: 'Courier New';"}.
+-   Also refer to the MetaDataDefinition file provided by Diversity Arrays Technology as part of their report. The same file as Exercise 1.
 
--   Now examine the individual metadata in the file [sample_data_1Row.csv]{style="color:blue; font-family: 'Courier New';"}. Note the two mandatory columns id and pop.
+-   Individual metadata file is the same for exercise 1.
 
 -   Create a new script in the RStudio Editor Window and add the lines
 
 ```{r}
 # EXERCISE 2: SilicoDArT data
 # Input data from sample_data_SilicoDArT.csv, 
-#  associate with sample_data_SilicoDArT.csv
+#  associate with sample_metadata.csv
 ```
 
--   Add a statement to read the SNP data in to dartR as a genlight object called `gs`.
+-   Add a statement to read the SNP data in to dartR as a genlight object called `gs`. You will need to use the `gl.read.silicodart()` function.
 
 -   Add a statement to examine a summary of the contents of `gs`.
 
 -   Use the `as.matrix()` function to display the genotypes for the first 5 individuals and the first 10 loci.
 
-##### Hints
+###### Hints
 
 still to come....
