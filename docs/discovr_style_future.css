@@ -76,15 +76,16 @@ h1 {
 }
 
 h2 {
-  color: #3C648C;
-}
-
-h3 {
   color: #cc9900;
 }
 
+h3 {
+  color: #000000;
+  font-size: 18px;
+}
+
 h4 {
-  color: #427479;
+  color: #3C648C;
 }
 
 .alt {
