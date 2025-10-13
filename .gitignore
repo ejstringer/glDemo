@@ -39,9 +39,6 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
-# pkgdown site
-docs/
-
 # translation temp files
 po/*~
 
@@ -51,3 +48,8 @@ rsconnect/
 
 # dont publish html
 *.html
+/.quarto/
+
+# pkgdown site
+!docs/
+!docs/**/*.html
