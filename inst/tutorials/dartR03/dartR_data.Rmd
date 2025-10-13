@@ -36,13 +36,15 @@ library(glDemo) # for tutorial data
 
 
 ## Introduction
-###
+
+### About
 
 In this tutorial, you will learn how to work with dartR objects. If you haven't already, check out the Introduction dartR ebook chapter [[How dartR stores your data and data input](http://dartr.biomatix.org/dartR)]{style="color:#ff0000;"}. There is also an accompanying [AI podcast summary](https://public.3.basecamp.com/p/Dp1F2egZGXY5siDf1MPFqyyg), which you should definitely check out if you are more of an auditory learner.
 
 If you can't see the left sidebar you just need to make the tutorial panel wider.
 
 ###
+
 Throughout this tutorial there will be interactive R scripts/consoles (like the one below). This is like a mini version of R running within this tutorial. But since we are already in R, you can also follow along in your own console and start writing your own code in the source panel. You could even try testing some of what you learn on your own data. 
 
 But first, try running the code below (press the button that says *run code*)
@@ -79,14 +81,13 @@ They need to be run in your console. These are optional at the time, if you want
 
 ###
 
-One final note, while going through the tutorial your progress will be saved, if at any point you would like to refresh the tutorial and start over, the <small>[Start Over]{style="color:#a3a3a3; font-family:'Ubuntu';"}</small> button is located at the bottom of the left sidebar, below the tutorial content.
+One final note, while going through the tutorial your progress will be saved, if at any point you would like to refresh the tutorial and start over, the <small>[Start Over]{style="color:#a3a3a3; font-family:'Jaldi', sans-serif;"}</small> button is located at the bottom of the left sidebar, below the tutorial content.
 
 ###
 
 Alright! Let's get started, click the button below to continue to the next section
 
 ## The data
-###
 
 In this worked example, we will access the sample data files provided on the [**dartR web page**](http://dartr.biomatix.org/dartR). You will be directed to download them later on in this tutorial.
 
@@ -276,8 +277,8 @@ as.matrix(gl)[1:5,1:10]
 Nice! Now lets move on to the metadata
 
 ## Metadata
-###
 
+### The two types
 There are two types of metadata, one associated with the loci and the other associated with individuals. Let's start with individual metadata.
 
 ### Individual metrics
@@ -360,8 +361,8 @@ gl@other$loc.metrics$RepAvg[1:10]
 Great work! You really must be getting to know the data by now. Let's move on to saving our work.
 
 ## Save and tidy
-### 
 
+### Compact files
 Raw data files can be very large and take time to read into dartR. It is something you only want to do once. You can save your dartR genlight object in compact binary form. This will take only seconds to load into RStudio, not minutes.
 
 
@@ -413,7 +414,7 @@ rank_ex <- sortable::question_rank(
   
 )
 
-quiz(caption = "Let's review what we learnt from the SNP data (gl)",
+quiz(caption = "Let's review what we learnt from the SNP data <small>(only applicable for the RStudio interactive tutorial version)</small>",
 question_text(
   "What was the number of loci?",
   answer(250, message = "close, but that is the number of individuals not the number of loci"),
@@ -449,7 +450,7 @@ Below are two exercises for you to try on your own with everything you've learnt
 
 #### **Exercise 1: 1-Row Format**
 
-**Exercise**
+##### Exercise
 
 -   Open the file [sample_data_1Row.csv]{style="color:blue; font-family: 'Courier New';"} [`r xfun::embed_file("./www/sampledata1row.csv", name = "sample_data_1row.csv", text = "(click to download)")`]{style="font-family: 'Courier New';"} in Excel. This is a set of SNP data for *Emydura*, a freshwater turtle, in 1-row format as would be supplied by [Diversity Arrays Technology Pty Ltd](https://www.diversityarrays.com).
 
@@ -472,10 +473,8 @@ Below are two exercises for you to try on your own with everything you've learnt
 
 -   Use the `as.matrix()` function to display the genotypes for the first 5 individuals and the first 10 loci.
 
-###### 
-
 <details>
-  <summary>Click me to expand</summary>
+  <summary><b><span style="color:orange; cursor:pointer">Hints </b></span>(click to expand)</summary>
 
 *To load in DArT data you need to use the function `gl.read.dart()`. Don't forget to use the assign function `<-` to name your data.*
 
@@ -485,10 +484,9 @@ Below are two exercises for you to try on your own with everything you've learnt
 
 </details>
 
-###### Solution
 
 <details>
-  <summary>Click me to expand</summary>
+  <summary><span style="color:orange; cursor:pointer">Solutions </span>(click to expand)</summary>
 
 ```{r eval=FALSE}
 # EXERCISE 1: 1-Row Format
@@ -515,10 +513,7 @@ as.matrix(gl.1row)[1:5,1:10]
 
 #### **Exercise 2: SilicoDArT** {data-progressive=FALSE}
 
-
-#####  {.tabset}
-
-###### Exercise
+##### Exercise
 
 -   Open the file [sample_data_silicodart.csv]{style="color:blue; font-family: 'Courier New';"} in Excel. This is a set of marker presence/absence data for Cherax destructor provided in SilicoDArT format by Diversity Arrays Technology Pty Ltd.
 
@@ -542,6 +537,18 @@ as.matrix(gl.1row)[1:5,1:10]
 
 -   Use the `as.matrix()` function to display the genotypes for the first 5 individuals and the first 10 loci.
 
-###### Hints
+
+<details>
+  <summary><b><span style="color:orange; cursor:pointer">Hints </b></span>(click to expand)</summary>
 
 still to come....
+
+</details>
+
+
+<details>
+  <summary><span style="color:orange; cursor:pointer">Solutions </span>(click to expand)</summary>
+
+still to come....
+
+</details>
