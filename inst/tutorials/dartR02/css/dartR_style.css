@@ -62,11 +62,11 @@ em {
 /*--------- Headers ---------*/
 
 p {
-  font-size: 18px;
+  font-size: 15px;
 }
 
 ul {
-  font-size: 18px;
+  font-size: 15px;
 }
 
 h1 {
@@ -75,10 +75,12 @@ h1 {
 
 h2 {
   color: #3C648C;
+  font-weight: bold;
 }
 
 h3 {
   color: #cc9900;
+  font-size: 24px;
 }
 
 h4 {
@@ -200,15 +202,15 @@ a:hover, a:focus {
 /*------- Main menu -------*/
 .topicsList .topic {
     color: #49345b;
-    line-height: 40px;
-    font-size: 20px;
+    line-height: 30px;
+    font-size: 18px;
     padding-left: 10px;
     cursor: pointer;
     background-color: white;
     background-repeat: no-repeat;
     background-size: 2px 80px;
     background-position: left 100%;
-    background-image: url(images/topicProgress.png);
+    background-image: url(images/task.png);
     border-bottom: 1px solid #edeae5;
     border-top: 0;
     -webkit-transition-property: background-position;
@@ -245,6 +247,7 @@ a:hover, a:focus {
 .popover-title {
     margin: 0;
     padding: 8px 14px;
+    line-height: 16px;
     font-size: 14px;
     background-color: #E8EAE5;
     border-bottom: 1px solid #49345b;
@@ -252,8 +255,12 @@ a:hover, a:focus {
     color: #3F3F3F;
     text-shadow: none;
     font-family: 'Jaldi', sans-serif;
+    max-height: 100px; /* Adjust this value as needed */
 }
 
+.popover {
+    max-height: 100px !important; /* Adjust this value as needed for smaller popovers */
+}
 /*------- Buttons -------*/
 
 .btn-primary, .btn-success, .btn-info, .btn-xs, .btn-default {
@@ -390,6 +397,8 @@ a:hover, a:focus {
   width: 25%;
 }
 
+
+
 .right_txt {
   width: 75%;
 }
@@ -424,13 +433,14 @@ a:hover, a:focus {
 
 .my-solution {
   margin: 1em 0;
+  padding-left: 5px;
   border: 2px solid darkseagreen;
   border-left: 10px solid #698B69;
   border-radius: 10px;
 }
 
 .my-solution-header {
-  margin-left: 0;
+  margin-left: 15;
   padding-left:  60px;
   padding-top:  15px;
   padding-bottom: 0.1em;
@@ -453,3 +463,9 @@ a:hover, a:focus {
   border-bottom-right-radius: 10px;
 }
 
+/* styles.css */
+.responsive-image {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
