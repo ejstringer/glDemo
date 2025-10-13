@@ -34,9 +34,6 @@ library(glDemo) # for tutorial data
 
 ```
 
-```{r klippy, echo=FALSE, include=TRUE}
-klippy::klippy()
-```
 
 ## Introduction
 ###
@@ -167,23 +164,20 @@ Name your dartR object `gl`
 
 :::
 
-<small>Below are two tabs, the first is the code and the second is the output generated when running the code - loading in a dartR object.</small>
-
-####  {.tabset}
-
-##### code
 
 ```{r, eval = FALSE}
 gl <- gl.read.dart(filename="./sample_data_2Row.csv",
                    ind.metafile="./sample_metadata.csv")
 ```
 
-##### output
+### Console output when reading in data
 
 ```{r, echo = FALSE}
 gl <- gl.read.dart(filename="./www/sampledata2Row.csv",
                    ind.metafile="./www/samplemetadata1.csv")
 ```
+
+
 
 ```{r datax}
 gl <- gl_sample 
@@ -455,9 +449,7 @@ Below are two exercises for you to try on your own with everything you've learnt
 
 #### **Exercise 1: 1-Row Format**
 
-#####  {.tabset}
-
-###### Exercise
+**Exercise**
 
 -   Open the file [sample_data_1Row.csv]{style="color:blue; font-family: 'Courier New';"} [`r xfun::embed_file("./www/sampledata1row.csv", name = "sample_data_1row.csv", text = "(click to download)")`]{style="font-family: 'Courier New';"} in Excel. This is a set of SNP data for *Emydura*, a freshwater turtle, in 1-row format as would be supplied by [Diversity Arrays Technology Pty Ltd](https://www.diversityarrays.com).
 
@@ -480,7 +472,10 @@ Below are two exercises for you to try on your own with everything you've learnt
 
 -   Use the `as.matrix()` function to display the genotypes for the first 5 individuals and the first 10 loci.
 
-###### Hints
+###### 
+
+<details>
+  <summary>Click me to expand</summary>
 
 *To load in DArT data you need to use the function `gl.read.dart()`. Don't forget to use the assign function `<-` to name your data.*
 
@@ -488,9 +483,12 @@ Below are two exercises for you to try on your own with everything you've learnt
 
 *To subset data you use the square brackets `[ ]`. A matrix is two dimensional so you can subset by rows and columns, separated by a comma like so: `[rows, columns]`. Individuals are associated with rows and loci are associated with columns*
 
-
+</details>
 
 ###### Solution
+
+<details>
+  <summary>Click me to expand</summary>
 
 ```{r eval=FALSE}
 # EXERCISE 1: 1-Row Format
@@ -512,6 +510,8 @@ nPop(gl.1row)
 as.matrix(gl.1row)[1:5,1:10]
 
 ```
+
+</details>
 
 #### **Exercise 2: SilicoDArT** {data-progressive=FALSE}
 
