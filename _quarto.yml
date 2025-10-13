@@ -1,0 +1,24 @@
+project:
+  type: book
+  output-dir: docs
+book:
+  title: dartR Introductory Tutorials
+  author: Bernd Gruber, Arthur Georges, Luis Mijangos, and Emily Stringer
+  date: 10/21/2025
+  chapters:
+  - index.qmd
+  - inst/tutorials/dartR03/dartR_data.Rmd
+bibliography: references.bib
+highlight-style: pygments
+format:
+  html:
+    theme: cosmo
+    css:
+    - discovr_style_future.css
+    number-depth: 1
+    include-after-body: include/webex.js
+    link-external-icon: true
+    link-external-newwindow: true
+execute: 
+  cache: false
+editor: visual

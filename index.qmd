@@ -1,0 +1,23 @@
+![](images/dartR7.png)
+
+## Welcome! {.unnumbered}
+
+📘 **Introduction**
+
+In the age of genomics, the ability to efficiently analyze large-scale genetic data has become essential for researchers across evolutionary biology, conservation genetics, agriculture, and beyond. Among the many tools available, the dartR package in R stands out as a powerful, flexible, and user-friendly solution for working with SNP data derived from reduced-representation sequencing methods such as DArTseq and RADseq. This ebook is designed to guide you through the practical use of dartR - from installation and data import to advanced population genetic analyses and visualization. Whether you're a seasoned bioinformatician or a newcomer to genetic data analysis, dartR offers a streamlined workflow that integrates data filtering, exploratory statistics, and reproducible reporting - all within the familiar environment of R. You'll learn how to:
+
+-   🧬 Import and manage SNP datasets using dartR's intuitive data structures
+
+-   🔍 Apply rigorous filtering and quality control to ensure robust results
+
+-   📊 Perform key genetic analyses such as diversity metrics, population structure, and Fst
+
+-   🌍 Visualize genetic patterns across space and time
+
+-   🛠️ Extend dartR with custom functions and integrate it with other R packages
+
+By the end of this guide, you'll not only understand how to use dartR effectively---you'll be equipped to explore your own genetic datasets with confidence and clarity. Let's dive into the genome, one SNP at a time.
+
+## A big thank you to the developers!
+
+DartR published first by @gruber2018, and DartR V2 published by @mijangos2022
