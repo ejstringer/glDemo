@@ -77,11 +77,14 @@ h1 {
 
 h2 {
   color: #cc9900;
+  
 }
 
 h3 {
   color: #000000;
   font-size: 18px;
+  margin-bottom: 0;
+  margin-top: 0;
 }
 
 h4 {
