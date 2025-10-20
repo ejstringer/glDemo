@@ -1,0 +1,482 @@
+---
+title: "dartR Introductory Tutorials"
+author: "Arthur Georges and Emily Stringer"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+    theme: "cerulean"
+    highlight: "tango"
+    css: ./css/dartR_style.css
+runtime: shiny_prerendered
+description: "data in dartR"
+---
+
+<html lang="en">
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+
+#necessary to render tutorial correctly
+library(learnr) 
+library(htmltools)
+#options(repos = BiocManager::repositories())
+library(dartR.data)
+library(dartR.base)
+gl.set.verbosity(3)
+
+library(glDemo) # for tutorial data
+
+```
+
+## Introduction 
+
+This is your hands on introduction to [dartR](https://github.com/green-striped-gecko/dartRverse?tab=readme-ov-file#dartrverse-). The worked examples and exercises in this tutorial correspond to the [[Intro to dartR ebook](http://dartr.biomatix.org/dartR)]{style="color:#ff0000;"}. There are also accompanying [AI podcast summaries](https://public.3.basecamp.com/p/Dp1F2egZGXY5siDf1MPFqyyg) for all the chapters, which you should definitely check out if you are more of an auditory learner.
+
+If you can't see the left sidebar, you just need to make the tutorial panel wider.
+
+### 
+
+### R code box
+
+Throughout this tutorial there will be interactive R scripts/consoles (like the one below). This is like a mini version of R running within this tutorial. But since we are already in R, you can also follow along in your own console and start writing your own code in the source panel. You could even try testing some of what you learn on your own data.
+
+But first, try running the code below (press the button that says *run code*)
+
+```{r ex, exercise=TRUE}
+# Press the Run Code button to run this code
+1+1
+```
+
+```{r ex-solution}
+# This is an example of the interactive component 
+#of this tutorial. 
+
+# Try running some code and testing out the three buttons:
+#  - Run Code, 
+#  - Start Over, 
+#  - and Solution
+
+```
+
+###
+
+Did you notice the tick that is showing before the *R cod box* heading after running the code?
+
+### 
+
+It is worth noting that each R code box is independent, so code you ran in one will not be recognised by another. Don't worry though, we have done some fancy coding in the background for you to continue along, keeping track of the tasks performed before hand. 
+
+Any troubles or tribulations with coding in dartR, we have a great community that can be found on the [dartR google group](https://groups.google.com/g/dartr).
+
+### 
+
+Some of the exercises within this tutorial are specific to your working environment or Rstudio, these types of exercises will be surrounded by a green box, like the one below.
+
+::: {.my-solution icon="false"}
+It might be loading in data, or setting the working environment, or creating an R project.
+
+They need to be run in your console. These are optional at the time, if you want you can continue with the worked example and come back to these when you want to start working in your own RStudio.
+:::
+
+### 
+
+While going through the worked examples your progress will be saved, if at any point you would like to refresh the tutorial and start over, the <small>[Start Over]{style="color:#a3a3a3; font-family:'Jaldi', sans-serif;"}</small> button is located at the bottom of the left sidebar, below the tutorial content.
+
+### 
+
+One final note, don't forget that all aspects of the material are beneficial for learning. The ebook for being introduced to the theory and methods, the worked examples to gain experience in the application, and finally the exercises to apply everything you have learned.
+
+Alright! Head back to the ebook and get ready to start working through the worked examples and exercises back here when prompted.
+
+<p>Good luck on your Pop Gen journey! 😁</p>
+
+## Worked Ex 1-1
+
+yet to come...
+
+## Exercises 1
+
+## Worked Ex 2-1
+
+yet to come...
+
+## Exercises 2
+
+## Worked Ex 3-1
+
+yet to come...
+
+## Exercises 3 
+
+## Worked Ex. 4-1
+
+[Basic Attributes and Quality Control]{style="color:#cc9900; font-size: 16px; font-weight: bold;"}
+
+### 
+
+This worked example will take you by the hand and lead you through the analyses covered so far in Chapter 4. We will work with a small dataset to examine its class and interrogate its contents using [adegenet](https://adegenet.r-forge.r-project.org/) accessors.
+
+### Examine dataset class
+
+We will be using the `testset.gl` data for this worked example. First, copy the test dataset to a new genlight object called `gl`. You can then check the class of the object with `class()`.
+
+```{r data1}
+gl <- testset.gl
+
+```
+
+```{r ex1, exercise=TRUE}
+
+```
+
+```{r ex1-solution}
+gl <- testset.gl
+class(gl)
+```
+
+### 
+
+The class is **dartR**, still a genlight object but with some additions.
+
+### Examine dataset attributes
+
+Examine the contents of your genlight object by simply typing its name. This will give you the attributes associated with the object.
+
+```{r ex2, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex2-solution}
+gl
+```
+
+<small>Note: If it is a SNP dataset, the ploidy of each individual will be reported as (range 2-2). If it is a SilicoDArT dataset, the ploidy will be reported as (range: 1-1)</small>
+
+### 
+
+Displayed are the number of genotypes (individuals/specimens/samples), the size of the genlight object, and the number of missing values. The ploidy value should be 2-2 for SNP data for a diploid organism (dartR does not have support for polyploid organisms), so if it is something else, you have a problem with your data. SilicoDArT presence absence data has the ploidy set to 1-1.
+
+### 
+
+**Slots** containing important information are listed, such as `@position`, which lists the position of the SNPs in the sequence tags (referenced from 0 as position 1). The `@other` slot is particularly important, because it holds the loc.metrics from Diversity Arrays Technology Pty Ltd (DArT) and your ind.metrics.
+
+### Compliance check
+
+If any of the optional content slots indicated above are missing, consider running `gl.compliance.check()`. Try testing it with the current data. Make sure to save your compliant genlight object using `<-`.
+
+```{r ex3, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex3-solution}
+gl <- gl.compliance.check(gl)
+```
+
+### 
+
+This will render the genlight object compliant with dartR.
+
+### Summary of the dataset
+
+To obtain a basic summary for a genlight object, use `gl.report.basics()`.
+
+```{r ex4, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex4-solution}
+gl.report.basics(gl)
+
+```
+
+### 
+
+Note that **dartR** keeps a summary of manipulations applied to a genlight object, which can be useful if you wish to repeat the analysis or for documenting the steps taken in preparing the data for further analysis.
+
+### Examine history
+
+You can access the history of your dartR object with the following slot: `@other$history`. Try checking the history of `gl`.
+
+```{r ex5, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex5-solution}
+gl@other$history
+
+```
+
+### 
+
+There is not much to keep track of, yet! It might be worthwhile checking the history of `gl` as we go along to understand what is being tracked. If you want an example right now, you can run `gl <- gl.compliance.check(gl)` and then check the history of the new genlight object as you did above.  
+
+### Examine metrics
+
+To access metadata directly you can use commands of the form `gl@other$loc.metrics$CallRate`. Try saving the CallRate as a new r object named `cr` and then running a histogram using `hist()`. 
+
+```{r ex6, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex6-solution}
+cr <- gl@other$loc.metrics$CallRate
+hist(cr)
+```
+
+### Name metrics
+
+You can try this on other variables. To remind yourself of the variables in the metadata you can use `names()` for the `loc.metrics` and `ind.metrics`. 
+
+```{r ex7, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex7-solution}
+names(gl@other$loc.metrics)
+# or names(gl@other$ind.metrics)
+```
+
+###
+
+You can also run `gl.report.basics`, which we ran previously.
+
+
+### Using adegenet accessors
+
+You can also interrogate the genlight object using commands built into the [adegenet](https://adegenet.r-forge.r-project.org/) package. Give each of these a try with `gl`.
+
+`nLoc()` <br>
+`locNames()`<br>
+`nInd()`<br>
+`indNames()`<br>
+`nPop()`<br>
+`popNames()`<br>
+`pop()`
+
+```{r ex8, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+### 
+
+Note the distinction between `popNames(gl)` and `pop(gl)`. `pop()` gives you the population associated with each individual, `popNames()` gives you the names of the populations ~ `unique(pop(gl))`.
+
+### Convert to matrix
+
+To convert your genlight object to a conventional matrix, use `as.matrix()`. Save your matrix as `m` and then using square brackets we can look at the first five individuals and seven loci `[1:5,1:7]`.
+
+```{r ex9, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex9-solution}
+m <- as.matrix(gl)
+m[1:5,1:7]
+```
+
+###
+
+These are all useful for interrogating your genlight object, and of course can be used in your r scripts to subset and manipulate your data.
+
+### dartR report functions
+
+Now we will try the report functions. In each case, think about what threshold you might define to discard loci or individuals with poor quality (quality control).
+
+**Important Note**: Do not assign the output of the report function to your genlight object or you will overwrite your genlight object.
+
+### Call rate
+
+`gl.report.callrate()` summarises CallRate values for loci and individuals.  A locus can fail to call for an individual because the sequence tag was missed during sequencing (if a service with low read depth) or because of a mutation at one or both of the restriction enzyme sites or internal to the sequence tag. 
+
+### Call rate "loc"
+
+First let's see the report for call rate on loci of our data `gl`. To do this we need to the method within `gl.report.callrate()` using `method = "loc"`.
+
+```{r ex10, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex10-solution}
+gl.report.callrate (gl, method='loc')
+```
+
+
+### 
+
+Each report function is matched with a filter function, e.g. `gl.filter.callrate()` (refer Chapter 5). What threshold would you choose?
+
+### Call Rate "ind"
+
+Now lets report on individual call rates. We use the same function as before but make the method equal to `"ind"`.
+
+```{r ex11, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex11-solution}
+gl.report.callrate (gl, method='ind')
+```
+
+### 
+
+What threshold would you choose based on individuals?
+
+For further help, type `?gl.report.callrate`.
+
+### Reproducibility
+
+The reproducibility function summarises repAvg (SNP) or reproducibility (SilicoDArT) values for each locus. DArT runs technical replicates that allow for an assessment of the reliability of the scoring for each locus. 100% means that identical results were obtained for both technical replicates. 
+
+Try running the `gl.report.reproducibility()` on `gl`. 
+
+
+```{r ex12, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex12-solution}
+gl.report.reproducibility(gl)
+```
+
+###
+
+Matched with `gl.filter.reproducibility()` (refer Chapter 5). 
+
+For further help, type `?gl.report.reproducibility`.
+
+### Read depth
+
+`gl.report.rdepth()` reports an estimate of average read depth for each locus. Adequate read depth is desirable for analyses requiring accurate calls of heterozygotes in particular. 
+
+```{r ex13, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex13-solution}
+gl.report.rdepth(gl)
+```
+
+###
+
+Matched with `gl.filter.rdepth()` (refer Chapter 5). 
+
+For further help, type `?gl.report.rdepth`.
+
+### Hamming distance
+
+Hamming Distance is a measure of how similar two sequence tags are. There is a risk that two very similar sequence tags are from the same locus distinguished only by the rare read error. Sequence tags produced by DArT have already been filtered by Hamming Distance (typically threshold 3 bp) but you might choose to be more stringent. `gl.report.hamming()` will give you an indication of whether you have an issue to resolve or not. 
+
+```{r ex14, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex14-solution}
+gl.report.hamming(gl)
+```
+
+###
+
+Matched with `gl.filter.hamming()` (refer Chapter 5). 
+
+For further help, type `?gl.report.hamming.`
+
+### Tag lengths
+
+Tag lengths (each bearing one or more SNPs) can vary substantially, typically from 20bp to 69 bp in the case of DArT data. `gl.report.taglength()` reports a frequency tabulation of sequence tag lengths. 
+
+```{r ex15, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex15-solution}
+gl.report.taglength(gl)
+```
+
+###
+
+Matched with `gl.filter.taglength()` (refer Chapter 5). For further help, type `?gl.report.taglength.`
+
+### Sex linkage
+
+Linkage is an important consideration for many analyses. Fortunately, SNPs on separate sequence tags can be considered to assort independently because of the sparse nature of their sampling across the genome. However, if two SNPs occur in a non-recombining block of sequence, they will be co-inherited. This occurs for SNPs that reside in the non-recombining region of the sex chromosomes. They are referred to as sex-linked. `gl.report.sexlinked()` identifies putative sex-linked SNP loci. 
+
+```{r ex16, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex16-solution}
+gl.report.sexlinked(gl)
+```
+
+###
+
+Matched with `gl.drop.sexlinked()` (refer Chapter 5). For further help, type `?gl.report.sexlinked`.
+
+### Overshoot
+
+The overshoot report deals with a rare anomaly. Occasionally the adaptor sequence has close sequence homology with part of the sequence tag. When this occurs part of the sequence tag is eliminated and sometimes this carries the SNP with it. `gl.report.overshoot()` reports loci for which the SNP has been trimmed along with the adaptor sequence. 
+
+```{r ex17, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex17-solution}
+gl.report.overshoot(gl)
+```
+
+###
+
+Matched with `gl.filter.overshoot()` (refer Chapter 5). For further help, type `?gl.report.overshoot.`
+
+
+### Monomorphs
+
+`gl.report.monomorphs()` provides a count of polymorphic and monomorphic loci. 
+
+```{r ex18, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex18-solution}
+gl.report.monomorphs(gl)
+```
+
+###
+
+Matched with `gl.filter.monomorphs()`(refer Chapter 5). For further help, type `?gl.report.monomorphs`. Many functions also have a mono.rm option which, if TRUE, filters monomorphic loci.
+
+### Secondaries
+
+Sequence tags can often contain more than one SNP, potentially up to 7 SNPs in a sequence tag of 69 bp. Alleles at these SNP loci are potentially co-inherited and so are linked. `gl.report.secondaries()` identifies and counts the number of SNP loci in each sequence tag. Try it on `gl`.
+
+```{r ex19, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex19-solution}
+gl.report.secondaries(gl)
+```
+
+###
+
+It has the added feature of modelling the frequency distribution of SNP locus counts and estimating the zero class, that is, the number of (unreported) sequence tags that are invariant. This can be useful for correcting some estimates,such as heterozygosity.
+
+Matched with `gl.filter.secondaries()`, which will retain only one SNP from each 69bp sequences, i.e. retaining only one sequence tag, using one of two methods: *random* selection or *best* call rate. 
+
+For further help, type `?gl.report.secondaries`.
+
+###
+
+**Well done!** That was a lot of reporting. Head back to the ebook for some prerequisite reading before the next worked example.
+
+
+## Worked Ex. 4-2
+
+Yet to come
+
+## Exercises 4
