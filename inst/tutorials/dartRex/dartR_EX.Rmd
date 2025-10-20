@@ -33,7 +33,7 @@ library(glDemo) # for tutorial data
 
 ```
 
-## Introduction
+## Introduction 
 
 This is your hands on introduction to [dartR](https://github.com/green-striped-gecko/dartRverse?tab=readme-ov-file#dartrverse-). The worked examples and exercises in this tutorial correspond to the [[Intro to dartR ebook](http://dartr.biomatix.org/dartR)]{style="color:#ff0000;"}. There are also accompanying [AI podcast summaries](https://public.3.basecamp.com/p/Dp1F2egZGXY5siDf1MPFqyyg) for all the chapters, which you should definitely check out if you are more of an auditory learner.
 
@@ -41,13 +41,11 @@ If you can't see the left sidebar, you just need to make the tutorial panel wide
 
 ### 
 
-### 
+### R code box
 
 Throughout this tutorial there will be interactive R scripts/consoles (like the one below). This is like a mini version of R running within this tutorial. But since we are already in R, you can also follow along in your own console and start writing your own code in the source panel. You could even try testing some of what you learn on your own data.
 
 But first, try running the code below (press the button that says *run code*)
-
-### R code box {data-progressive=FALSE}
 
 ```{r ex, exercise=TRUE}
 # Press the Run Code button to run this code
@@ -117,7 +115,7 @@ yet to come...
 
 ## Worked Ex. 4-1
 
-[Basic Attributes and QC]{style="color:#cc9900; font-size: 16px; font-weight: bold;"}
+[Basic Attributes and Quality Control]{style="color:#cc9900; font-size: 16px; font-weight: bold;"}
 
 ### 
 
@@ -215,7 +213,7 @@ gl@other$history
 
 ### 
 
-There is not much to keep track of, yet! It might be worthwhile checking the history of `gl` as we go along to understand what is being tracked.  
+There is not much to keep track of, yet! It might be worthwhile checking the history of `gl` as we go along to understand what is being tracked. If you want an example right now, you can run `gl <- gl.compliance.check(gl)` and then check the history of the new genlight object as you did above.  
 
 ### Examine metrics
 
@@ -230,7 +228,7 @@ cr <- gl@other$loc.metrics$CallRate
 hist(cr)
 ```
 
-###
+### Name metrics
 
 You can try this on other variables. To remind yourself of the variables in the metadata you can use `names()` for the `loc.metrics` and `ind.metrics`. 
 
@@ -266,7 +264,7 @@ You can also interrogate the genlight object using commands built into the [adeg
 
 ### 
 
-Note the distinction between `popNames(gl)` and `pop(gl)`. The two are related by pop names equals `unique(pop(gl))`.
+Note the distinction between `popNames(gl)` and `pop(gl)`. `pop()` gives you the population associated with each individual, `popNames()` gives you the names of the populations ~ `unique(pop(gl))`.
 
 ### Convert to matrix
 
@@ -284,6 +282,197 @@ m[1:5,1:7]
 ###
 
 These are all useful for interrogating your genlight object, and of course can be used in your r scripts to subset and manipulate your data.
+
+### dartR report functions
+
+Now we will try the report functions. In each case, think about what threshold you might define to discard loci or individuals with poor quality (quality control).
+
+**Important Note**: Do not assign the output of the report function to your genlight object or you will overwrite your genlight object.
+
+### Call rate
+
+`gl.report.callrate()` summarises CallRate values for loci and individuals.  A locus can fail to call for an individual because the sequence tag was missed during sequencing (if a service with low read depth) or because of a mutation at one or both of the restriction enzyme sites or internal to the sequence tag. 
+
+### Call rate "loc"
+
+First let's see the report for call rate on loci of our data `gl`. To do this we need to the method within `gl.report.callrate()` using `method = "loc"`.
+
+```{r ex10, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex10-solution}
+gl.report.callrate (gl, method='loc')
+```
+
+
+### 
+
+Each report function is matched with a filter function, e.g. `gl.filter.callrate()` (refer Chapter 5). What threshold would you choose?
+
+### Call Rate "ind"
+
+Now lets report on individual call rates. We use the same function as before but make the method equal to `"ind"`.
+
+```{r ex11, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex11-solution}
+gl.report.callrate (gl, method='ind')
+```
+
+### 
+
+What threshold would you choose based on individuals?
+
+For further help, type `?gl.report.callrate`.
+
+### Reproducibility
+
+The reproducibility function summarises repAvg (SNP) or reproducibility (SilicoDArT) values for each locus. DArT runs technical replicates that allow for an assessment of the reliability of the scoring for each locus. 100% means that identical results were obtained for both technical replicates. 
+
+Try running the `gl.report.reproducibility()` on `gl`. 
+
+
+```{r ex12, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex12-solution}
+gl.report.reproducibility(gl)
+```
+
+###
+
+Matched with `gl.filter.reproducibility()` (refer Chapter 5). 
+
+For further help, type `?gl.report.reproducibility`.
+
+### Read depth
+
+`gl.report.rdepth()` reports an estimate of average read depth for each locus. Adequate read depth is desirable for analyses requiring accurate calls of heterozygotes in particular. 
+
+```{r ex13, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex13-solution}
+gl.report.rdepth(gl)
+```
+
+###
+
+Matched with `gl.filter.rdepth()` (refer Chapter 5). 
+
+For further help, type `?gl.report.rdepth`.
+
+### Hamming distance
+
+Hamming Distance is a measure of how similar two sequence tags are. There is a risk that two very similar sequence tags are from the same locus distinguished only by the rare read error. Sequence tags produced by DArT have already been filtered by Hamming Distance (typically threshold 3 bp) but you might choose to be more stringent. `gl.report.hamming()` will give you an indication of whether you have an issue to resolve or not. 
+
+```{r ex14, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex14-solution}
+gl.report.hamming(gl)
+```
+
+###
+
+Matched with `gl.filter.hamming()` (refer Chapter 5). 
+
+For further help, type `?gl.report.hamming.`
+
+### Tag lengths
+
+Tag lengths (each bearing one or more SNPs) can vary substantially, typically from 20bp to 69 bp in the case of DArT data. `gl.report.taglength()` reports a frequency tabulation of sequence tag lengths. 
+
+```{r ex15, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex15-solution}
+gl.report.taglength(gl)
+```
+
+###
+
+Matched with `gl.filter.taglength()` (refer Chapter 5). For further help, type `?gl.report.taglength.`
+
+### Sex linkage
+
+Linkage is an important consideration for many analyses. Fortunately, SNPs on separate sequence tags can be considered to assort independently because of the sparse nature of their sampling across the genome. However, if two SNPs occur in a non-recombining block of sequence, they will be co-inherited. This occurs for SNPs that reside in the non-recombining region of the sex chromosomes. They are referred to as sex-linked. `gl.report.sexlinked()` identifies putative sex-linked SNP loci. 
+
+```{r ex16, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex16-solution}
+gl.report.sexlinked(gl)
+```
+
+###
+
+Matched with `gl.drop.sexlinked()` (refer Chapter 5). For further help, type `?gl.report.sexlinked`.
+
+### Overshoot
+
+The overshoot report deals with a rare anomaly. Occasionally the adaptor sequence has close sequence homology with part of the sequence tag. When this occurs part of the sequence tag is eliminated and sometimes this carries the SNP with it. `gl.report.overshoot()` reports loci for which the SNP has been trimmed along with the adaptor sequence. 
+
+```{r ex17, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex17-solution}
+gl.report.overshoot(gl)
+```
+
+###
+
+Matched with `gl.filter.overshoot()` (refer Chapter 5). For further help, type `?gl.report.overshoot.`
+
+
+### Monomorphs
+
+`gl.report.monomorphs()` provides a count of polymorphic and monomorphic loci. 
+
+```{r ex18, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex18-solution}
+gl.report.monomorphs(gl)
+```
+
+###
+
+Matched with `gl.filter.monomorphs()`(refer Chapter 5). For further help, type `?gl.report.monomorphs`. Many functions also have a mono.rm option which, if TRUE, filters monomorphic loci.
+
+### Secondaries
+
+Sequence tags can often contain more than one SNP, potentially up to 7 SNPs in a sequence tag of 69 bp. Alleles at these SNP loci are potentially co-inherited and so are linked. `gl.report.secondaries()` identifies and counts the number of SNP loci in each sequence tag. Try it on `gl`.
+
+```{r ex19, exercise=TRUE, exercise.setup = "data1"}
+
+```
+
+```{r ex19-solution}
+gl.report.secondaries(gl)
+```
+
+###
+
+It has the added feature of modelling the frequency distribution of SNP locus counts and estimating the zero class, that is, the number of (unreported) sequence tags that are invariant. This can be useful for correcting some estimates,such as heterozygosity.
+
+Matched with `gl.filter.secondaries()`, which will retain only one SNP from each 69bp sequences, i.e. retaining only one sequence tag, using one of two methods: *random* selection or *best* call rate. 
+
+For further help, type `?gl.report.secondaries`.
+
+###
+
+**Well done!** That was a lot of reporting. Head back to the ebook for some prerequisite reading before the next worked example.
 
 
 ## Worked Ex. 4-2
