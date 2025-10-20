@@ -7,7 +7,7 @@ book:
   date: 10/21/2025
   chapters:
   - index.qmd
-  - inst/tutorials/dartR03/dartR_data.Rmd
+  - inst/tutorials/dartRex/dartR_EX.Rmd
 bibliography: references.bib
 highlight-style: pygments
 format:
