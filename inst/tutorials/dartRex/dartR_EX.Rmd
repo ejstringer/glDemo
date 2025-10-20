@@ -302,7 +302,7 @@ First let's see the report for call rate on loci of our data `gl`. To do this we
 ```
 
 ```{r ex10-solution}
-gl.report.callrate (gl, method='loc')
+gl.report.callrate(gl, method='loc')
 ```
 
 
@@ -319,7 +319,7 @@ Now lets report on individual call rates. We use the same function as before but
 ```
 
 ```{r ex11-solution}
-gl.report.callrate (gl, method='ind')
+gl.report.callrate(gl, method='ind')
 ```
 
 ### 
@@ -421,12 +421,15 @@ Matched with `gl.drop.sexlinked()` (refer Chapter 5). For further help, type `?g
 
 The overshoot report deals with a rare anomaly. Occasionally the adaptor sequence has close sequence homology with part of the sequence tag. When this occurs part of the sequence tag is eliminated and sometimes this carries the SNP with it. `gl.report.overshoot()` reports loci for which the SNP has been trimmed along with the adaptor sequence. 
 
+test `gl` and `platypus.gl` datasets. 
+
 ```{r ex17, exercise=TRUE, exercise.setup = "data1"}
 
 ```
 
 ```{r ex17-solution}
 gl.report.overshoot(gl)
+gl.report.overshoot(platypus.gl)
 ```
 
 ###
@@ -477,6 +480,8 @@ For further help, type `?gl.report.secondaries`.
 
 ## Worked Ex. 4-2
 
-Yet to come
+`testset.gl` data filtered... 
+
+This worked example will take you by the hand and lead you through the analyses for dropping populations, merging and renaming populations, reassigning populations, and subsampling populations. We will work with a read dataset on freshwater turtles collected from across eastern and northern Australia.  
 
 ## Exercises 4
