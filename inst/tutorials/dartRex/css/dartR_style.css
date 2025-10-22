@@ -66,13 +66,19 @@ p {
 }
 
 ul {
-  color: red;
-  font-size: 15px;
+  color: black;
+  /*list-style-type: "🟨 ";*/
+}
+
+li::marker {
+  color: #cc9900; 
+  font-weight: bold;
 }
 
 h1 {
   color: #000080;
   font-weight: bold;
+  font-size: 20px;
 }
 
 h2 {
@@ -202,6 +208,8 @@ a:hover, a:focus {
 }
 
 /*------- nav links --------*/
+
+
 .nav-link{
   color: #cc9900;
   }
@@ -209,8 +217,8 @@ a:hover, a:focus {
 /*------- Main menu -------*/
 .topicsList .topic {
     color: #49345b;
-    line-height: 30px;
-    font-size: 18px;
+    line-height: 20px;
+    font-size: 14px;
     padding-left: 10px;
     cursor: pointer;
     background-color: white;
