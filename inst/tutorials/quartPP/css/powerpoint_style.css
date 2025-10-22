@@ -1,0 +1,79 @@
+
+/*-------- Background color & body font --------*/
+body {
+  background-color:	#FFFFFF;
+  color: #616161;
+}
+
+
+.current{
+  box-shadow: none;
+}
+
+
+/*------- padding sides --------*/
+.band {
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 2%;
+    padding-right: 2%;
+    position: relative;
+}
+
+/*-------- Code chunk main panel --------*/
+
+.ace-tm {
+    background-color: white;
+    color: #3f3f3f;
+    border-bottom: 1px solid #e8eae5;
+    border-left: 1px solid #e8eae5;
+    border-right: 1px solid #e8eae5;
+    font-size: 15px;
+}
+
+/*-------- Line # cells --------*/
+
+.ace_gutter-cell {
+    padding-left: 10px;
+    padding-right: 4px;
+    background-repeat: no-repeat;
+    background-color: #e8eae5;
+    border: 0;
+    color: #2F4F4F;
+}
+
+/*-------- Code returns --------*/
+.tutorial-exercise-output > pre {
+    max-height: 400px;
+    overflow-y: visible;
+    background-color: #f2f5f7;
+    color: #3f3f3f;
+    font-size: 5px;
+}
+
+
+/*------- In line code aesthetic --------*/
+code {
+    color: #427479;
+    background-color: #427479;
+    background-color: rgba(66, 116, 121, 0.1);
+    font-size: 14px;
+}
+
+-webkit-scrollbar-thumb {
+    box-shadow: rgba(0,0,0,0); 
+}
+
+
+/*------ slides -------*/
+
+
+body slides > slide {
+  box-shadow: none;
+  background: #ffffff;
+  transition: none; !important
+}
+
+* {
+  transition: none !important;
+}

@@ -33,7 +33,7 @@ library(glDemo) # for tutorial data
 
 ```
 
-## Introduction 
+## Introduction {data-progressive=FALSE} 
 
 This is your hands on introduction to [dartR](https://github.com/green-striped-gecko/dartRverse?tab=readme-ov-file#dartrverse-). The worked examples and exercises in this tutorial correspond to the [[Intro to dartR ebook](http://dartr.biomatix.org/dartR)]{style="color:#ff0000;"}. There are also accompanying [AI podcast summaries](https://public.3.basecamp.com/p/Dp1F2egZGXY5siDf1MPFqyyg) for all the chapters, which you should definitely check out if you are more of an auditory learner.
 
@@ -95,25 +95,24 @@ Alright! Head back to the ebook and get ready to start working through the worke
 
 <p>Good luck on your Pop Gen journey! 😁</p>
 
-## Worked Ex 1-1
+## The data
+
+## Worked Ex 1-1: Rstudio project
 
 yet to come...
 
-## Exercises 1
 
-## Worked Ex 2-1
-
-yet to come...
-
-## Exercises 2
-
-## Worked Ex 3-1
+## Worked Ex 2-1: Metadata
 
 yet to come...
 
-## Exercises 3 
 
-## Worked Ex. 4-1
+## Worked Ex 3-1: Input
+
+yet to come...
+
+
+## Worked Ex. 4-1: Attributes
 
 [Basic Attributes and Quality Control]{style="color:#cc9900; font-size: 16px; font-weight: bold;"}
 
@@ -302,7 +301,7 @@ First let's see the report for call rate on loci of our data `gl`. To do this we
 ```
 
 ```{r ex10-solution}
-gl.report.callrate (gl, method='loc')
+gl.report.callrate(gl, method='loc')
 ```
 
 
@@ -319,7 +318,7 @@ Now lets report on individual call rates. We use the same function as before but
 ```
 
 ```{r ex11-solution}
-gl.report.callrate (gl, method='ind')
+gl.report.callrate(gl, method='ind')
 ```
 
 ### 
@@ -421,12 +420,15 @@ Matched with `gl.drop.sexlinked()` (refer Chapter 5). For further help, type `?g
 
 The overshoot report deals with a rare anomaly. Occasionally the adaptor sequence has close sequence homology with part of the sequence tag. When this occurs part of the sequence tag is eliminated and sometimes this carries the SNP with it. `gl.report.overshoot()` reports loci for which the SNP has been trimmed along with the adaptor sequence. 
 
+test `gl` and `platypus.gl` datasets. 
+
 ```{r ex17, exercise=TRUE, exercise.setup = "data1"}
 
 ```
 
 ```{r ex17-solution}
 gl.report.overshoot(gl)
+gl.report.overshoot(platypus.gl)
 ```
 
 ###
@@ -475,8 +477,217 @@ For further help, type `?gl.report.secondaries`.
 **Well done!** That was a lot of reporting. Head back to the ebook for some prerequisite reading before the next worked example.
 
 
-## Worked Ex. 4-2
+## Worked Ex. 4-2: Populations
 
-Yet to come
+```{r data2}
+gl <- gl.filter.overshoot(testset.gl)
+gl <- gl.filter.callrate(gl)
+gl <- gl.filter.reproducibility(gl)
+gl <- gl.filter.rdepth(gl)
+gl <- gl.filter.hamming(gl)
+gl <- gl.filter.monomorphs(gl)
+
+turtle.gl <- gl
+```
+
+`testset.gl` data filtered... 
+
+This worked example will take you by the hand and lead you through the analyses for dropping populations, merging and renaming populations, reassigning populations, and subsampling populations. We will work with a read dataset on freshwater turtles collected from across eastern and northern Australia, `turtle.gl`. 
+
+### Examine
+
+Quickly check the contents of `turtle.gl`.
+
+```{r exx1, exercise=TRUE, exercise.setup = "data2"}
+
+```
+
+```{r exx1-solution}
+turtle.gl
+```
+
+
+### Populations
+
+Check to see what populations `turtle.gl` has defined. Do you remember the function that checks population names?
+
+
+```{r exx2, exercise=TRUE, exercise.setup = "data2"}
+
+```
+
+```{r exx2-solution}
+popNames(turtle.gl)
+```
+
+### 
+
+Thirty populations. 
+
+### Sample size 
+
+Now let's check the sample sizes. Do you remember the functions to see the sample size per population, don't forget to use the `table()` function. 
+
+```{r exx3, exercise=TRUE, exercise.setup = "data2"}
+
+```
+
+```{r exx3-solution}
+table(pop(turtle.gl))
+```
+
+###
+
+This should all be looking familiar to you, it is the same dataset we used for Worked Example 4-1.
+
+### Dropping populations
+
+We make the decision to delete the two populations that are based on only a single sample. To do this we need to use the `gl.drop.pop()`. It has two arguments we need to provide it with. The first is our genlight object `turtle.gl`, the second is `pop.list = c("popname1","popname2")`. We need to list the names of the populations we actually want to remove. What were the names populations with one sample?
+
+```{r exx4, exercise=TRUE, exercise.setup = "data2"}
+
+```
+
+```{r exx4-solution}
+turtle.gl <- gl.drop.pop(turtle.gl, pop.list=c("EmmacNormLeic", "EmmacNormSalt"))
+```
+
+###
+
+See also `gl.keep.pop()` which allows you to specify populations to keep rather than populations to delete.
+
+### Arisen monomorphs
+
+The output confirms that the two populations have been deleted, but also issues a warning that monomorphic loci may have arisen with the deletion of the two populations. If this is undesirable, one could have run the above command with the parameter `mono.rm=TRUE`. However, we did not use this option, so we can remove monomorphic loci now using `gl.filter.monomorphs()`:
+
+
+```{r data3}
+gl <- gl.filter.overshoot(testset.gl)
+gl <- gl.filter.callrate(gl)
+gl <- gl.filter.reproducibility(gl)
+gl <- gl.filter.rdepth(gl)
+gl <- gl.filter.hamming(gl)
+gl <- gl.filter.monomorphs(gl)
+
+turtle.gl <- gl
+turtle.gl <- gl.drop.pop(turtle.gl, pop.list=c("EmmacNormLeic", "EmmacNormSalt"))
+```
+
+```{r exx5, exercise=TRUE, exercise.setup = "data3"}
+
+```
+
+```{r exx5-solution}
+turtle.gl <- gl.filter.monomorphs(turtle.gl)
+```
+
+###
+
+Th output shows how many monomorphic loci were detected, and if any, the number deleted.
+
+### Merging  populations
+
+Two populations from the Clarence River (EmmacClarJack, EmmacClarYate) can be merged into one population (EmmacClar) using `gl.merge.pop()`. The first argument is your data, then `old = c()` old pop names, and then `new = ""` new pop name.
+
+```{r exx6, exercise=TRUE, exercise.setup = "data3"}
+
+```
+
+```{r exx6-solution}
+turtle.gl <- gl.merge.pop(turtle.gl, old=c("EmmacClarJack", "EmmacClarYate"), new="EmmacClar")
+```
+
+```{r data4}
+gl <- gl.filter.overshoot(testset.gl)
+gl <- gl.filter.callrate(gl)
+gl <- gl.filter.reproducibility(gl)
+gl <- gl.filter.rdepth(gl)
+gl <- gl.filter.hamming(gl)
+gl <- gl.filter.monomorphs(gl)
+
+turtle.gl <- gl
+turtle.gl <- gl.drop.pop(turtle.gl, pop.list=c("EmmacNormLeic", "EmmacNormSalt"))
+turtle.gl <- gl.merge.pop(turtle.gl, old=c("EmmacClarJack", "EmmacClarYate"), new="EmmacClar")
+```
+### Renaming populations
+
+populations can also be renamed using `gl.rename.pop()`, using the same arguments as merging, including the old name, and the new name. 
+
+```{r exx7, exercise=TRUE, exercise.setup = "data4"}
+
+```
+
+```{r exx7-solution}
+turtle.gl <- gl.rename.pop(turtle.gl,old="EmmacClar",new="EmmacClarence")
+```
+
+### Reassigning populations
+
+We can reassign populations using the `ind.metrics`. The **region** can be temporarily assigned as the `pop` variable using `gl.reassign.pop()`, including the argument `as.pop = 'region'`. `gl.reassign.pop()` will replace the existing population assignments with values of the individual metric **region**. Confirm this using `popNames()`.
+
+```{r exx7x, exercise=TRUE, exercise.setup = "data4"}
+
+```
+
+```{r exx7x-solution}
+turtle.gl <- gl.reassign.pop(turtle.gl, as.pop="region")
+popNames(turtle.gl)
+```
+###
+
+Some functions allow the temporary assignment of an individual metric as the population attribute. For example, `gl.drop.pop()`. You can confirm that the metrics that were dropped are no longer present in the data, in this case **region** should no longer contain **NSW**.
+
+```{r exx8, exercise=TRUE, exercise.setup = "data4"}
+turtle.gl <- gl.drop.pop(turtle.gl, pop.list="NSW", as.pop="region")
+gl@other$ind.metrics$region
+
+```
+
+### Subsampling populations
+
+To subsample populations in a genlight object containing SNP or SilicoDArT data, use `gl.subsample.pop()`. The first argument is your data, next is `n =##`, ## denoting the number of individuals you want to sample from each population, replace  
+
+```{r exx9, exercise=TRUE, exercise.setup = "data4"}
+gl2 <- gl.subsample.ind(gl, n=4, replace=F, by.pop = T)
+gl2
+```
+
+```{r exx9-solution}
+
+```
+
+This option is particularly useful when used in combination with population assignment, for example
+
+## Exercises 1
+
+## Exercises 2
+
+## Exercises 3
 
 ## Exercises 4
+
+Working through these exercises is very important because it requires you to recall and integrate what you have learned in a problem-solving context. These exercises and analysing your own data are critical to deep learning.
+
+#### Exercise 4-1: SNP data
+
+
+
+-	Load Exercise_4-1.Rdata to genlight object gl.
+
+-	How many loci are represented in this dataset?
+
+-	How many individuals have been scored?
+
+-	Are the individuals assigned to populations and if so, how many populations? What are the names of the populations?
+
+-	Examine the genotypes for the first 5 individuals for the first 10 loci.
+
+-	How are missing values represented?
+
+-	Run a series of reports to assess the quality of the SNP calls. Generate reports for reproducibility, rdepth, secondaries, overshoot, taglength, monomorphs and other locus metadata in gl.
+
+-	Examine the structure of the dataset in a smear plot. What can you say about allelic dropout?
+
+-	Redo activities 2-7 with your own data.
+
+

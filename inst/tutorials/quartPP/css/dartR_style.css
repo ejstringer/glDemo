@@ -66,19 +66,13 @@ p {
 }
 
 ul {
-  color: black;
-  /*list-style-type: "🟨 ";*/
-}
-
-li::marker {
-  color: #cc9900; 
-  font-weight: bold;
+  color: red;
+  font-size: 15px;
 }
 
 h1 {
   color: #000080;
   font-weight: bold;
-  font-size: 20px;
 }
 
 h2 {
@@ -179,10 +173,11 @@ h4 {
 
 /*-------- Code returns --------*/
 .tutorial-exercise-output > pre {
-    max-height: 500px;
+    max-height: 300px;
     overflow-y: auto;
     background-color: #f2f5f7;
     color: #3f3f3f;
+    font-size: 15px;
 }
 
 
@@ -208,8 +203,6 @@ a:hover, a:focus {
 }
 
 /*------- nav links --------*/
-
-
 .nav-link{
   color: #cc9900;
   }
@@ -217,8 +210,8 @@ a:hover, a:focus {
 /*------- Main menu -------*/
 .topicsList .topic {
     color: #49345b;
-    line-height: 20px;
-    font-size: 14px;
+    line-height: 30px;
+    font-size: 18px;
     padding-left: 10px;
     cursor: pointer;
     background-color: white;
