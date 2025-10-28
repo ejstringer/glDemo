@@ -11,8 +11,6 @@ output:
 description: "Genetic Structure presentation"
 ---
 
-
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
 	echo = TRUE,
@@ -41,35 +39,35 @@ library(glDemo) # for tutorial data
 
 ## Introduction
 
->-   What is a "population" in population genetics?
+> -   What is a "population" in population genetics?
 
->-   Genetic structure defined -- how allele frequencies vary among groups.
+> -   Genetic structure defined -- how allele frequencies vary among groups.
 
->-   Key drivers: effective population size, gene flow/immigration, natural selection, drift.
+> -   Key drivers: effective population size, gene flow/immigration, natural selection, drift.
 
->-   Isolation-by-distance & sampling design -- avoiding spurious structure.
+> -   Isolation-by-distance & sampling design -- avoiding spurious structure.
 
->-   Why we care: management units, inbreeding, local adaptation, introgression.
+> -   Why we care: management units, inbreeding, local adaptation, introgression.
 
 ## test
 
-- what
+-   what
 
-- when 
+-   when
 
-- how
+-   how
 
-## Populations 
+## Populations
 
 ![](images/pop_spp.png){.class height="450"}
 
 ## Isolation by distance
 
-IBD 
+IBD
 
 ![](images/ibd.png){.class height="450"}
 
----
+------------------------------------------------------------------------
 
 ```{r data1}
 gl <- platypus.gl
@@ -84,6 +82,3 @@ pc <- gl.pcoa(platypus.gl, verbose = 0, plot.out = F)
 gl <- testset.gl
 class(gl)
 ```
-
-
-
