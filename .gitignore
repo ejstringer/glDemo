@@ -53,3 +53,6 @@ rsconnect/
 # pkgdown site
 !docs/
 !docs/**/*.html
+
+/data-raw/*.csv
+

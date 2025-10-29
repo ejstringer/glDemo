@@ -10,25 +10,22 @@ library(dartRverse)
 # load --------------------------------------------------------------------
 
 
-tympos1 <- gl.read.dart("./data-raw/Report_DTym25-12345_10_moreOrders_SNP_1.csv", 
+tympos1 <- gl.read.dart("./data-raw/Report_DTym25-12345_10_moreOrders_SNP_1.csv", ## Kept ~5500 loci from oder **_SNP_2.csv
                         ind.metafile = "./data-raw/GED2025_corr.csv")
-saveRDS(tympos1, './data-raw/tympos1.rds')
-
-tympos1 <- readRDS('./data-raw/tympos1.rds')
 
 plot(tympos1@other$loc.metrics$CallRate)
 hist(tympos1@other$loc.metrics$CallRate)
 
 # downsample loci ---------------------------------------------------------
 
-nLoc(tympos1)
-systematic_sample <- seq(1, nLoc(tympos1), length.out = 3210)
+# nLoc(tympos1)
+# systematic_sample <- seq(1, nLoc(tympos1), length.out = 3210)
+# 
+# systematic_sample <- 1:5432
+# tympos <- gl.keep.loc(tympos1, loc.list = tympos1@loc.names[systematic_sample])
+# tympos
 
-systematic_sample <- 1:5432
-tympos <- gl.keep.loc(tympos1, loc.list = tympos1@loc.names[systematic_sample])
-tympos
-
-
+tympos <- tympos1
 # wild pops only ----------------------------------------------------------
 
 index <- tympos@other$ind.metrics$Colony=="Wild" 
@@ -43,9 +40,11 @@ nInd(tw_final)
 
 # generic pop names -------------------------------------------------------
 
-pop(tw_final) <- factor(ifelse(tw_final@other$ind.metrics$pop == 'Jerrabomberra West',
+pop(tw_final) <- factor(ifelse(grepl('West', tw_final@other$ind.metrics$pop),
                                'W_Can',as.character(tw_final@other$ind.metrics$group)))
 
+pop(tw_final) <- factor(ifelse(grepl('Cook', tw_final@other$ind.metrics$pop),
+                               'E_Can', as.character(tw_final@pop)))
 table(tw_final@pop)
 tw_final@other$ind.metrics[tw_final@pop == 'unknown',]
 
@@ -71,11 +70,18 @@ poplocation <- cbind(id = possums.gl@ind.names,
   summarise(min_lat = min(lat),
             max_lat = max(lat),
             min_lon = min(lon),
-            max_lon = max(lon))
+            max_lon = max(lon)) 
 
 idpop <- data.frame(id = tw_final@ind.names, pop = tw_final@pop)
 
-individuals<-left_join(idpop, poplocation)
+poplocationE <- poplocation %>%
+  rbind(data.frame(pop = 'E_Can', 
+          min_lat = poplocation$min_lat[3],
+          max_lat = poplocation$max_lat[3],
+          min_lon = poplocation$max_lon[2],
+          max_lon = poplocation$min_lon[1]))
+
+individuals<-left_join(idpop, poplocationE)
 table(tw_final@ind.names == individuals$id)
 individuals<-individuals %>% 
   #filter(complete.cases(min_lat)) %>% 
@@ -107,7 +113,7 @@ tw_final@other$ind.metrics$age <- tw_final@other$ind.metrics$Age
 tw_final@other$ind.metrics[,c('id', 'pop', 'lat', 'lon', 'year', 'sex', 'age')] %>% head
 tw_final@other$ind.metrics <- tw_final@other$ind.metrics[,c('id', 'pop', 'lat', 'lon', 'year', 'sex', 'age')]
 
-tw_final@other$ind.metrics
+tw_final@other$ind.metrics %>% head
 
 # checks ------------------------------------------------------------------
 #gl.subsample.ind(tw_final, n = 20)
@@ -165,27 +171,64 @@ h %>%
 
 ## structure ---------------------------------------------------------------
 
-#gl.download.binary(software = 'structure', out.dir = getwd())
-struct <- gl.run.structure(tw_final, k.range = 1:5,
-                           exec = "./structure/structure.exe",noadmix = F)
-
-gl.plot.structure(struct, K = 3)
-gl.evanno(struct)
+# #gl.download.binary(software = 'structure', out.dir = getwd())
+# struct <- gl.run.structure(tw_final, k.range = 1:5,
+#                            exec = "./structure/structure.exe",noadmix = F)
+# 
+# gl.plot.structure(struct, K = 3)
+# gl.evanno(struct)
 
 
 
 # csv keep files ----------------------------------------------------------
 
-indkeep <- data.frame(id = tympos1@ind.names, 
-                      keep = tympos1@ind.names %in% tw_final@ind.names)
+loc_data <- read.csv('./data-raw/Report_DTym25-12345_10_moreOrders_SNP_1.csv',
+                     header = F)
 
 
-lockeep <- data.frame(id = tympos1@loc.names, 
-                      keep = tympos1@loc.names %in% tw_final@loc.names)
+loc_data[1:9, 30:40]
+row6 <- loc_data[7,]
 
-lockeep <- lockeep[rep(nrow(lockeep), each = 2),]
-table(duplicated(lockeep$id))
+locmet <- which(row6 == 'RepAvg')
+indkeep <- which(row6 %in% tw_final@ind.names) 
 
-write.csv(indkeep, './data-raw/indkeep.csv', row.names = F)
-write.csv(lockeep, './data-raw/lockeep.csv', row.names = F)
+loc_data_keep <- loc_data[,c(1:locmet, indkeep)]
 
+write.csv(loc_data_keep,
+          './data-raw/Report_DTym25-13579_10_moreOrders_SNP_1.csv',
+          row.names = F) 
+
+## DELETE top row of file and move to extdata
+
+
+# metadata ----------------------------------------------------------------
+metaweights <- tw_final@other$ind.metrics %>% 
+  mutate(svlmin = case_when(
+    age == 'A' ~ 48,
+    age == 'SA' ~ 38,
+    age == 'J' ~ 20
+  ),
+  svlmax = case_when(
+    age == 'A' ~ 85,
+    age == 'SA' ~ 48,
+    age == 'J' ~ 38
+  )) %>% 
+  rowwise() %>% 
+  mutate(svl = runif(1, min = svlmin, max = svlmax)) %>% 
+  mutate(svl = ifelse(is.nan(svl),NA, svl))
+
+tw_final@other$ind.metrics$svl = round(metaweights$svl,1)
+
+tw_final@other$ind.metrics$age <- factor(tw_final@other$ind.metrics$age)
+
+boxplot(metaweights$svl ~ metaweights$age)
+
+
+write.csv(tw_final@other$ind.metrics, './inst/extdata/Tympo_metadata.csv',
+          row.names = F)
+
+
+
+# data --------------------------------------------------------------------
+tympo.gl <- tw_final
+usethis::use_data(tympo.gl, overwrite = TRUE)
